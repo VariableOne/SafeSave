@@ -19,3 +19,8 @@ router.get('/registration', async ({ view }) => {
     return view.render('pages/auth')
   })
 
+  router.get('/home', async ({ view }) => {
+    return view.render('pages/home')
+  })
+
+
