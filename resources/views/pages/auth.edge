@@ -10,19 +10,7 @@
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">
-      <a href="https://www.youtube.com/watch?v=xMHJGd3wwZk" target="_blank">
-      <img src="SafeSave.png" alt="SafeSave Logo" height="50" width="180">
-    </a>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    </div>
-  </nav>
-  <body>
+  @include('pages/header')
     <div class="container">
       <div class="card">
         <div class="card-left">
@@ -30,9 +18,10 @@
             <br>
             <h3>Wilkommen bei SafeSave!</h3>
             <small>
-              Auf dieser Seite können Sie Ihre privaten Dateien einfach und sicher speichern!
+              Hier ganz einfach Ihre Dateien sicher speichern!
             </small>
           </div>
+            <img src="man_without_a_life.jpeg" alt="Man Without a Life">
         </div>
         <div class="card-right">
           <div class="card-body">

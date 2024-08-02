@@ -27,6 +27,7 @@ body {
   overflow: hidden;
   margin-top: 50px;
 }
+
 .card {
   width: 80vw; /* Breite der Karte auf 80% der Ansichtsbreite setzen */
   max-width: 900px; /* Maximale Breite der Karte setzen */
@@ -38,7 +39,21 @@ body {
 }
 .card-left {
   flex: 1;
-  background: #f8f9fa; /* optional: helles Hintergrund für den leeren Bereich */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Zentriert den Inhalt vertikal */
+  align-items: center; /* Zentriert den Inhalt horizontal */
+  background: #f8f9fa; /* Optional: helles Hintergrund für den leeren Bereich */
+  padding: 1rem; /* Optional: Padding für den Innenabstand */
+}
+
+.card-left .text-center {
+  margin-bottom: 1rem; /* Abstand zwischen Text und Bild */
+}
+
+.card-left img {
+  max-width: 80%; /* Optional: Bildgröße anpassen */
+  height: auto; /* Höhe automatisch anpassen, um das Seitenverhältnis zu bewahren */
 }
 .card-right {
   flex: 1;
