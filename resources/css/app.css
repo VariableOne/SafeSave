@@ -7,4 +7,14 @@ html,
 body {
   height: 100%;
   width: 100%;
+  background: linear-gradient(to right, #FF8C00, #000000);
+}
+
+.navbar {
+  background-color: darkorange !important;
+}
+
+.navbar .navbar-brand,
+.navbar .navbar-nav .nav-link {
+  color: white !important;
 }
