@@ -8,6 +8,7 @@ body {
   height: 100%;
   width: 100%;
   background: linear-gradient(to right, #FF8C00, #000000);
+  
 }
 
 .navbar {
@@ -17,4 +18,33 @@ body {
 .navbar .navbar-brand,
 .navbar .navbar-nav .nav-link {
   color: white !important;
+}
+
+.card {
+  background: linear-gradient(to right, #FFA500, #FF4500);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+}
+.card-header {
+  background: transparent;
+  border-bottom: none;
+}
+.card-body {
+  padding: 2rem;
+}
+.form-group {
+  margin-bottom: 1.5rem; /* Added margin between form groups */
+}
+.btn-primary {
+  background-color: #FF4500;
+  border-color: #FF4500;
+}
+.btn-primary:hover {
+  background-color: #FF6347;
+  border-color: #FF6347;
+}
+.form-control {
+  border-radius: 5px;
 }
