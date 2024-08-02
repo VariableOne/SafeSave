@@ -20,22 +20,37 @@ body {
   color: white !important;
 }
 
-.card {
-  background: linear-gradient(to right, #FFA500, #FF4500);
-  border: none;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
   margin-top: 50px;
 }
-.card-header {
-  background: transparent;
-  border-bottom: none;
+.card {
+  width: 80vw; /* Breite der Karte auf 80% der Ansichtsbreite setzen */
+  max-width: 900px; /* Maximale Breite der Karte setzen */
+  height: 60vh; /* Höhe der Karte auf 60% der Ansichts-Höhe setzen */
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
+  overflow: hidden; /* Verhindert, dass Inhalt außerhalb der Karte angezeigt wird */
 }
-.card-body {
+.card-left {
+  flex: 1;
+  background: #f8f9fa; /* optional: helles Hintergrund für den leeren Bereich */
+}
+.card-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #FFA500, #FF4500);
+  color: white;
   padding: 2rem;
 }
-.form-group {
-  margin-bottom: 1.5rem; /* Added margin between form groups */
+.card-body {
+  width: 100%;
 }
 .btn-primary {
   background-color: #FF4500;
