@@ -20,6 +20,25 @@ body {
   color: white !important;
 }
 
+.scrollable-container {
+  width: 700px; /* Breite des Fensters */
+  height: 400px; /* Höhe des Fensters */
+  overflow: auto; /* Ermöglicht das Scrollen */
+  border: 1px solid #ccc; /* Rahmen für das Fenster */
+  padding: 10px; /* Innenabstand */
+  background-color: #f8f9fa;
+  overflow-y: auto;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center; /* Zentriert die Buttons horizontal */
+  margin-top: 20px; /* Abstand oben zu dem scrollbaren Container */
+}
+.button-container button {
+  margin: 0 10px; /* Abstand zwischen den Buttons */
+}
+
 .container {
   display: flex;
   justify-content: center;

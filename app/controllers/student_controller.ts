@@ -53,14 +53,14 @@ export default class StudentsController {
 
             if (!result) {
                 console.log("User does not exist");
-                return view.render('pages/auth', { loginError: 'Benutzername oder Passwort ist falsch.' });
+                return view.render('pages/auth', { loginError: 'Email oder Passwort ist falsch.' });
             }
 
             const authenticated = await hash.verify(result.password, request.input('password'));
 
             if (!authenticated) {
                 console.log("Password incorrect");
-                return view.render('pages/auth', { loginError: 'Benutzername oder Passwort ist falsch.' });
+                return view.render('pages/auth', { loginError: 'Email oder Passwort ist falsch.' });
             }
 
             const student = {
