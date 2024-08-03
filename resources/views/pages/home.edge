@@ -84,11 +84,13 @@
     <button type="button" class="btn btn-secondary"  onclick="triggerFileUpload()">Datei hochladen</button>
     <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" style="display:none;">
     {{ csrfField() }}
+    <input type="hidden" id="student" name="student" value="{{ session.get('student').username }}"/>
     <input type="file" id="fileInput" name="fieldName" onchange="uploadFile()"/>
   </form>
   </div>
 
 <script>
+
   function triggerFileUpload() {
     document.getElementById('fileInput').click();
   }
