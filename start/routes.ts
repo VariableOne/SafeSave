@@ -17,6 +17,7 @@ router.get('/registration', async ({ view }) => {
   })
 
 router.post('/registration', [StudentsController, 'registerProcess']);
+router.post('/auth', [StudentsController, 'loginProcess']);
 
   router.get('/auth', async ({ view }) => {
     return view.render('pages/auth')

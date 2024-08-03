@@ -43,4 +43,35 @@ export default class StudentsController {
         return view.render('pages/auth', { result });
 
     }
+
+    public async loginProcess({ view, request, session }: HttpContext) {
+
+        const email = request.input('email');
+
+        if (request.method() === 'POST') {
+            const result = await db.from('student').select('*').where('email', email).first();
+
+            if (!result) {
+                console.log("User does not exist");
+                return view.render('pages/auth', { loginError: 'Benutzername oder Passwort ist falsch.' });
+            }
+
+            const authenticated = await hash.verify(result.password, request.input('password'));
+
+            if (!authenticated) {
+                console.log("Password incorrect");
+                return view.render('pages/auth', { loginError: 'Benutzername oder Passwort ist falsch.' });
+            }
+
+            const student = {
+                id: result.id,
+                email: result.email,
+            };
+
+            session.put('student', student);
+
+            return view.render('pages/home', { student });
+        }
+    }
+
 }
