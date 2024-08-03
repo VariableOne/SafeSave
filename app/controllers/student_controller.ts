@@ -66,6 +66,7 @@ export default class StudentsController {
             const student = {
                 id: result.id,
                 email: result.email,
+                username: result.username
             };
 
             session.put('student', student);

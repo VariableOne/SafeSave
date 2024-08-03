@@ -11,5 +11,15 @@
 </head>
 <body>
 @include('pages/header')
+
+<div class="row">
+  <div class="col">
+    <div style="margin-top: 20px; margin-left: 20px;">
+      <h4 style="border-bottom: 1px solid white; width: 90%; color: white">Wilkommen! Hier sind deine Dateien
+        {{session.get('student').username}}</h3>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
