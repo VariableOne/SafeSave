@@ -75,4 +75,10 @@ export default class StudentsController {
         }
     }
 
+    public async logout({ session, view }: HttpContext) {
+
+        session.forget('student');
+        return view.render('pages/auth');
+    }
+
 }

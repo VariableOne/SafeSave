@@ -12,16 +12,13 @@ import router from '@adonisjs/core/services/router'
 
 router.on('/').render('pages/auth')
 
-router.get('/registration', async ({ view }) => {
-    return view.render('pages/registration')
-  })
-
 router.post('/registration', [StudentsController, 'registerProcess']);
+router.get('/registration', async ({ view }) => {
+  return view.render('pages/registration')
+})
 router.post('/auth', [StudentsController, 'loginProcess']);
-
-  router.get('/auth', async ({ view }) => {
-    return view.render('pages/auth')
-  })
+router.post('/home', [StudentsController, 'logout']);
+router.get('/logout', [StudentsController, 'logout'])
 
   router.get('/home', async ({ view }) => {
     return view.render('pages/home')
