@@ -37,11 +37,26 @@
 <div class="container">
   <div class="scrollable-container">
     <div class="text-center">
-      <h4 style="color: grey;">Noch keine Dateien vorhanden.</h4>
-    </div>
-  </div>
-</div>
+      <h4 style="color: grey;">Dateien</h4>
+      
+      @if (files.length > 0)
+      <!-- Wenn Dateien vorhanden sind -->
+      <ul>
+        @each(file in files)
+          <li>
+            <strong>Dateiname:</strong> {{ file.file_name }}<br>
+            <strong>Größe:</strong> {{ file.file_size }} Bytes<br>
+            <strong>Format:</strong> {{ file.file_format }}
+          </li>
+        @endeach
+      </ul>
+    @else
+      <!-- Wenn keine Dateien vorhanden sind -->
+      <p>Noch keine Dateien vorhanden.</p>
+    @endif
 
+<form action="/home" method="POST">
+  {{csrfField()}}
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -49,7 +64,7 @@
         <h5 class="modal-title" id="exampleModalLabel">Neuen Ordner erstellen</h5>
       </div>
       <div class="modal-body">
-        <input type="text" placeholder="Name des neuen Ordners">
+        <input type="text" name="folderName" id="folderName" placeholder="Name des neuen Ordners">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
@@ -59,15 +74,30 @@
   </div>
 </div>
 </div>
+</form>
 
   <!-- Button Container -->
   <div class="button-container">
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
       Neuer Ordner
     </button>
-    <button type="button" class="btn btn-secondary">Neue Datei</button>
+    <button type="button" class="btn btn-secondary"  onclick="triggerFileUpload()">Datei hochladen</button>
+    <form id="uploadForm" action="/home" method="POST" enctype="multipart/form-data" style="display:none;">
+    {{ csrfField() }}
+    <input type="file" id="file" name="file" onchange="uploadFile()" />
+  </form>
   </div>
 
+<script>
+  function triggerFileUpload() {
+    document.getElementById('file').click();
+  }
+
+  function uploadFile() {
+    const form = document.getElementById('uploadForm');
+    form.submit();
+  }
+</script>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

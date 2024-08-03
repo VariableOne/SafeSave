@@ -41,7 +41,7 @@
     "@japa/runner": "^3.1.4",
     "@swc/core": "^1.6.5",
     "@types/luxon": "^3.4.2",
-    "@types/node": "^20.14.9",
+    "@types/node": "^22.1.0",
     "eslint": "^8.57.0",
     "hot-hook": "^0.2.6",
     "pino-pretty": "^11.2.1",
@@ -53,6 +53,7 @@
   "dependencies": {
     "@adonisjs/auth": "^9.2.3",
     "@adonisjs/core": "^6.12.1",
+    "@adonisjs/drive": "^2.3.0",
     "@adonisjs/lucid": "^21.1.0",
     "@adonisjs/session": "^7.4.2",
     "@adonisjs/shield": "^8.1.1",

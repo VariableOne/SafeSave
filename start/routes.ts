@@ -7,6 +7,7 @@
 |
 */
 
+import FilesController from '#controllers/files_controller';
 import StudentsController from '#controllers/student_controller';
 import router from '@adonisjs/core/services/router'
 
@@ -17,7 +18,7 @@ router.get('/registration', async ({ view }) => {
   return view.render('pages/registration')
 })
 router.post('/auth', [StudentsController, 'loginProcess'])
-router.get('/auth', [StudentsController, "loginForm"])
+router.get('/auth', [StudentsController, 'loginForm'])
 router.post('/home', [StudentsController, 'logout'])
 router.get('/logout', [StudentsController, 'logout'])
 
@@ -25,4 +26,5 @@ router.get('/logout', [StudentsController, 'logout'])
     return view.render('pages/home')
   })
 
-
+router.get('/upload', [FilesController, 'showUploadForm'])
+router.post('/upload', [FilesController, 'upload'])

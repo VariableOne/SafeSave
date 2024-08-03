@@ -69,9 +69,11 @@ export default class StudentsController {
                 username: result.username
             };
 
+            const files = await db.from('file').select('*');
+
             session.put('student', student);
 
-            return view.render('pages/home', { student });
+            return view.render('pages/home', { student, files });
         }
     }
 
