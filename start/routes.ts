@@ -7,6 +7,7 @@
 |
 */
 
+import StudentsController from '#controllers/student_controller';
 import router from '@adonisjs/core/services/router'
 
 router.on('/').render('pages/auth')
@@ -14,6 +15,8 @@ router.on('/').render('pages/auth')
 router.get('/registration', async ({ view }) => {
     return view.render('pages/registration')
   })
+
+router.post('/registration', [StudentsController, 'registerProcess']);
 
   router.get('/auth', async ({ view }) => {
     return view.render('pages/auth')

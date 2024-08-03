@@ -20,6 +20,14 @@
           <small>
             Sie sind noch nicht registriert? Dann wird das aber höchste Zeit!
           </small>
+          @if(registrationError)
+          <div class="alert alert-danger d-flex align-items-center" role="alert" id="warning" style="visibility: visible;">
+              {{registrationError}}
+              <button type="button" class="btn-close" aria-label="Close"
+                  onclick="document.getElementById('warning').style.visibility = 'hidden';"
+                  id="close_btn"></button>
+          </div>
+          @endif
         </div>
         <img src="man_without_a_life.jpeg" alt="Man Without a Life">
       </div>
@@ -28,22 +36,23 @@
           <div class="text-center">
             <h3>Registrieren bei SafeSave</h3>
           </div>
-          <form>
+          <form action="/registration" method="POST">
+            {{ csrfField() }}
             <div class="form-group">
                 <label for="username">Benutzername</label>
-                <input type="username" class="form-control" id="username" placeholder="Benutzernamen eingeben" required>
+                <input type="username" class="form-control" name="username" id="username" placeholder="Benutzernamen eingeben" required>
               </div>
             <div class="form-group">
               <label for="email">Email Addresse</label>
-              <input type="email" class="form-control" id="email" placeholder="Email eingeben" required>
+              <input type="email" class="form-control" name="email" id="email" placeholder="Email eingeben" required>
             </div>
             <div class="form-group">
               <label for="password">Passwort</label>
-              <input type="password" class="form-control" id="password" placeholder="Passwort" required>
+              <input type="password" class="form-control" name="password" id="password" placeholder="Passwort" required>
             </div>
             <div class="form-group">
-                <label for="password">Passwort Wiederholen</label>
-                <input type="password" class="form-control" id="password_repeated" placeholder="Passwort" required>
+                <label for="confirmPassword">Passwort Wiederholen</label>
+                <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" placeholder="Passwort" required>
               </div>
             <p><a class="link-opacity-10" href="/auth" style="color: #ffffff;">Doch schon registriert?</a></p>
             <button type="submit" class="btn btn-primary btn-block">Registrieren</button>
