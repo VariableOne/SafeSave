@@ -81,4 +81,9 @@ export default class StudentsController {
         return view.render('pages/auth');
     }
 
+    public async loginForm({ view }: HttpContext) {
+
+        return view.render('pages/auth');
+    }
+
 }
