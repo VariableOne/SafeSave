@@ -20,6 +20,24 @@ body {
   color: white !important;
 }
 
+/* Stil für das modale Fenster */
+.modal-dialog {
+  max-width: 500px;
+}
+.modal-header {
+  border-bottom: 1px solid #ddd;
+}
+.modal-footer {
+  border-top: 1px solid #ddd;
+}
+.modal-body input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
 .scrollable-container {
   width: 700px; /* Breite des Fensters */
   height: 400px; /* Höhe des Fensters */

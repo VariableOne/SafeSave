@@ -42,12 +42,35 @@
   </div>
 </div>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Neuen Ordner erstellen</h5>
+      </div>
+      <div class="modal-body">
+        <input type="text" placeholder="Name des neuen Ordners">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+        <button type="button" class="btn btn-primary">Erstellen</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
   <!-- Button Container -->
   <div class="button-container">
-    <button type="button" class="btn btn-primary">Neuer Ordner</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+      Neuer Ordner
+    </button>
     <button type="button" class="btn btn-secondary">Neue Datei</button>
   </div>
 
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
