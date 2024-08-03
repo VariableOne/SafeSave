@@ -38,6 +38,10 @@ body {
   border-radius: 5px;
 }
 
+.file-info div {
+  margin-right: 20px; /* Abstand zwischen den Informationen */
+}
+
 .scrollable-container {
   width: 700px; /* Breite des Fensters */
   height: 400px; /* Höhe des Fensters */
