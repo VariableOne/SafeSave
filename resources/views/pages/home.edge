@@ -82,15 +82,15 @@
       Neuer Ordner
     </button>
     <button type="button" class="btn btn-secondary"  onclick="triggerFileUpload()">Datei hochladen</button>
-    <form id="uploadForm" action="/home" method="POST" enctype="multipart/form-data" style="display:none;">
+    <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" style="display:none;">
     {{ csrfField() }}
-    <input type="file" id="file" name="file" onchange="uploadFile()" />
+    <input type="file" id="fileInput" name="fieldName" onchange="uploadFile()"/>
   </form>
   </div>
 
 <script>
   function triggerFileUpload() {
-    document.getElementById('file').click();
+    document.getElementById('fileInput').click();
   }
 
   function uploadFile() {

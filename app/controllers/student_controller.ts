@@ -37,7 +37,7 @@ export default class StudentsController {
         const result = await db.table('student').insert({
             username: username,
             email: email,
-            password: hashedPassword,
+            password: hashedPassword
         });
 
         return view.render('pages/auth', { result });
