@@ -19,9 +19,10 @@ router.get('/registration', async ({ view }) => {
 })
 router.post('/auth', [StudentsController, 'loginProcess'])
 router.get('/auth', [StudentsController, 'loginForm'])
-router.post('/home', [StudentsController, 'logout'])
+
 router.get('/logout', [StudentsController, 'logout'])
 
+router.post('/home', [StudentsController, 'logout'])
   router.get('/home', async ({ view }) => {
     return view.render('pages/home')
   })
@@ -30,3 +31,4 @@ router.get('/upload', [FilesController, 'showUploadForm'])
 router.post('/upload', [FilesController, 'upload'])
 
 router.get('/files/:id', [FilesController, 'show'])
+router.post('/files/:id',  [FilesController, 'deleteFile'])

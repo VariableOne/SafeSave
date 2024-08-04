@@ -64,7 +64,7 @@ export default class StudentsController {
             }
 
             const student = {
-                id: result.id,
+                student_id: result.student_id,
                 email: result.email,
                 username: result.username
             };

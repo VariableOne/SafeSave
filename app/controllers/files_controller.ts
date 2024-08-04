@@ -3,6 +3,7 @@ import db from "@adonisjs/lucid/services/db";
 import app from "@adonisjs/core/services/app";
 import fs from 'fs'
 import mime from 'mime-types'
+import path from "path";
 
 
 export default class FileController {
@@ -67,5 +68,33 @@ export default class FileController {
     response.header('Content-Disposition', `inline; filename="${fileRecord.file_name}"`)
 
     return response.stream(fs.createReadStream(filePath))
+  }
+
+  public async deleteFile({ params, session, response }: HttpContext) {
+    const fileId = params.id;
+    const studentId = session.get('student').student_id;
+
+    // Hol die Datei von der Datenbank
+    const fileRecord = await db.from('file').where('file_id', fileId).first();
+
+    if (!fileRecord) {
+      return response.notFound('File not found')
+    }
+
+    // Überprüfe, ob die Datei zum aktuellen Benutzer gehört
+    if (fileRecord.student_id !== studentId) {
+      return response.forbidden('Unauthorized')
+    }
+
+    // Lösche die Datei aus dem Dateisystem
+    const filePath = path.join(app.publicPath('uploads'), fileRecord.file_name)
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath)
+    }
+
+    // Lösche die Datei aus der Datenbank
+    await db.from('file').where('file_id', fileId).delete()
+
+    return response.redirect('/')
   }
 }
