@@ -103,7 +103,6 @@ export default class FileController {
     const fileId = request.input('fileToRename');
     const newFileName = request.input('newFileName');
     const studentId = session.get('student').student_id;
-    const fileRecord = await db.from('file').where('file_id', fileId).first();
 
     await db.from('file')
     .where('file_name', fileId).andWhere('student_id', studentId)
