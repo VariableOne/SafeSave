@@ -1,7 +1,6 @@
 import { HttpContext } from "@adonisjs/core/http";
 import db from "@adonisjs/lucid/services/db";
 import app from "@adonisjs/core/services/app";
-import { cuid } from "@adonisjs/core/helpers";
 import fs from 'fs'
 import mime from 'mime-types'
 
@@ -16,8 +15,8 @@ export default class FileController {
   public async upload({ request, response }: HttpContext) {
 
     const file = request.file('fieldName', {
-        size: '10mb',
-        extnames: ['jpg', 'png', 'gif', 'pdf', 'txt', 'docx', 'mp3', 'wav', 'flac']
+        size: '500mb',
+        extnames: ['jpg', 'png', 'gif', 'pdf', 'txt', 'docx', 'mp3', 'wav', 'flac', 'webm', 'zip']
       })
 
       if(!file){
@@ -39,6 +38,8 @@ export default class FileController {
       if (!student) {
         return response.unauthorized('Student not authenticated')
       }
+      console.log('File Size:', file.size);  // Gibt die Dateigröße in der Konsole aus
+
 
       await db.table('file').insert({
         file_name: file.clientName,
@@ -55,6 +56,7 @@ export default class FileController {
 
   public async show({ params, response }: HttpContext) {
     console.log(params.id);
+    
     const fileId = await db.from('file').where('file_name', params.id).select('file_id').first();
     const fileRecord = await db.from('file').where('file_id', fileId).firstOrFail()
 
