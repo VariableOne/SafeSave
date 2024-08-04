@@ -97,4 +97,21 @@ export default class FileController {
 
     return response.redirect('/')
   }
+
+  public async renameFile({ response, session, request }:HttpContext){
+
+    const fileId = request.input('fileToRename');
+    const newFileName = request.input('newFileName');
+    const studentId = session.get('student').student_id;
+    const fileRecord = await db.from('file').where('file_id', fileId).first();
+
+    await db.from('file')
+    .where('file_name', fileId).andWhere('student_id', studentId)
+    .update({
+      file_name: newFileName,
+      file_path: `uploads/${newFileName}`
+    });
+
+    return response.redirect('/')
+  }
 }

@@ -69,7 +69,7 @@ export default class StudentsController {
                 username: result.username
             };
 
-            const files = await db.from('file').select('*');
+            const files = await db.from('file').select('*').where('student_id', student.student_id);
 
             session.put('student', student);
 
