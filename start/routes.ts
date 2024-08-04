@@ -28,3 +28,5 @@ router.get('/logout', [StudentsController, 'logout'])
 
 router.get('/upload', [FilesController, 'showUploadForm'])
 router.post('/upload', [FilesController, 'upload'])
+
+router.get('/files/:id', [FilesController, 'show'])

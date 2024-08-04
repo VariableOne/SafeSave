@@ -41,6 +41,7 @@
     "@japa/runner": "^3.1.4",
     "@swc/core": "^1.6.5",
     "@types/luxon": "^3.4.2",
+    "@types/mime-types": "^2.1.4",
     "@types/node": "^22.1.0",
     "eslint": "^8.57.0",
     "hot-hook": "^0.2.6",
@@ -63,7 +64,9 @@
     "better-sqlite3": "^11.1.2",
     "bootstrap": "^5.3.3",
     "edge.js": "^6.0.2",
+    "fs": "^0.0.1-security",
     "luxon": "^3.4.4",
+    "mime-types": "^2.1.35",
     "reflect-metadata": "^0.2.2"
   },
   "hotHook": {
