@@ -46,7 +46,7 @@ export default class FileController {
         file_name: file.clientName,
         file_size: file.size,
         file_format: file.extname,
-        file_path: `uploads/${file.clientName}`,
+        file_path: `uploads/${file.fileName}`,
         student_id: student.student_id
       });
 
@@ -78,39 +78,55 @@ export default class FileController {
     const fileRecord = await db.from('file').where('file_id', fileId).first();
 
     if (!fileRecord) {
-      return response.notFound('File not found')
+        return response.notFound('File not found');
     }
 
     // Überprüfe, ob die Datei zum aktuellen Benutzer gehört
     if (fileRecord.student_id !== studentId) {
-      return response.forbidden('Unauthorized')
+        return response.forbidden('Unauthorized');
     }
 
     // Lösche die Datei aus dem Dateisystem
-    const filePath = path.join(app.publicPath('uploads'), fileRecord.file_name)
+    const filePath = path.join(app.publicPath(), `uploads/${fileRecord.fileName}`);
     if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath)
+        fs.unlinkSync(filePath);
     }
 
+    console.log(filePath);
+
     // Lösche die Datei aus der Datenbank
-    await db.from('file').where('file_id', fileId).delete()
+    await db.from('file').where('file_id', fileId).delete();
 
-    return response.redirect('/')
-  }
+    return response.redirect('/');
+}
 
-  public async renameFile({ response, session, request }:HttpContext){
-
+  public async renameFile({ response, session, request }: HttpContext) {
     const fileId = request.input('fileToRename');
     const newFileName = request.input('newFileName');
     const studentId = session.get('student').student_id;
 
-    await db.from('file')
-    .where('file_name', fileId).andWhere('student_id', studentId)
-    .update({
-      file_name: newFileName,
-      file_path: `uploads/${newFileName}`
-    });
+    // Find the existing file record
+    const fileRecord = await db.from('file').where('file_name', fileId).andWhere('student_id', studentId).first();
 
-    return response.redirect('/')
-  }
+    if (!fileRecord) {
+        return response.status(404).send('File not found');
+    }
+
+    const oldFilePath = path.join(app.publicPath(), fileRecord.file_path);
+    const fileExtension = path.extname(fileRecord.file_name);
+    const newFilePath = path.join(app.publicPath(), 'uploads', `${newFileName}${fileExtension}`);
+
+    // Rename the file in the filesystem
+    await fs.promises.rename(oldFilePath, newFilePath);
+
+    // Update the database record
+    await db.from('file')
+        .where('file_name', fileId).andWhere('student_id', studentId)
+        .update({
+            file_name: `${newFileName}${fileExtension}`,
+            file_path: `uploads/${newFileName}${fileExtension}`
+        });
+
+    return response.redirect('/');
+}
 }
