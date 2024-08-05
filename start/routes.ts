@@ -17,14 +17,13 @@ router.post('/registration', [StudentsController, 'registerProcess']);
 router.get('/registration', async ({ view }) => {
   return view.render('pages/registration')
 })
-router.post('/auth', [StudentsController, 'loginProcess'])
-router.get('/auth', [StudentsController, 'loginForm'])
+router.post('/home', [StudentsController, 'loginProcess'])
+router.get('/home', [StudentsController, 'loginForm'])
 
 router.get('/logout', [StudentsController, 'logout'])
 
-router.post('/home', [StudentsController, 'logout'])
-  router.get('/home', async ({ view }) => {
-    return view.render('pages/home')
+  router.post('/auth', async ({ view }) => {
+    return view.render('pages/auth')
   })
 
 router.get('/upload', [FilesController, 'showUploadForm'])

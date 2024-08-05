@@ -5,6 +5,7 @@ import hash from "@adonisjs/core/services/hash";
 import db from "@adonisjs/lucid/services/db";
 
 export default class StudentsController {
+    static registerProcess: any;
 
  
     public async registerProcess({ request, view }: HttpContext) {

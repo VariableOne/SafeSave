@@ -13,7 +13,7 @@ export default class FileController {
     return view.render('/upload', { files });
   }
 
-  public async upload({ request, response }: HttpContext) {
+  public async upload({ request, response, view }: HttpContext) {
 
     const file = request.file('fieldName', {
         size: '500mb',
@@ -50,8 +50,11 @@ export default class FileController {
         student_id: student.student_id
       });
 
-      console.log('File uploaded and saved to database successfully '+ student.student_id);
-      return response.redirect('/');
+    console.log('File uploaded and saved to database successfully '+ student.student_id);
+      
+    const files = await db.from('file').select('*').where('student_id', student.student_id);
+
+    return view.render('pages/home', {files});
 
   }
 
@@ -70,7 +73,7 @@ export default class FileController {
     return response.stream(fs.createReadStream(filePath))
   }
 
-  public async deleteFile({ params, session, response }: HttpContext) {
+  public async deleteFile({ params, session, response, view }: HttpContext) {
     const fileId = params.id;
     const studentId = session.get('student').student_id;
 
@@ -97,10 +100,12 @@ export default class FileController {
     // Lösche die Datei aus der Datenbank
     await db.from('file').where('file_id', fileId).delete();
 
-    return response.redirect('/');
+    const files = await db.from('file').select('*').where('student_id', studentId);
+
+    return view.render('pages/home', {files});
 }
 
-  public async renameFile({ response, session, request }: HttpContext) {
+  public async renameFile({ response, session, request, view }: HttpContext) {
     const fileId = request.input('fileToRename');
     const newFileName = request.input('newFileName');
     const studentId = session.get('student').student_id;
@@ -127,6 +132,8 @@ export default class FileController {
             file_path: `uploads/${newFileName}${fileExtension}`
         });
 
-    return response.redirect('/');
+        const files = await db.from('file').select('*').where('student_id', studentId);
+
+        return view.render('pages/home', {files});
 }
 }
