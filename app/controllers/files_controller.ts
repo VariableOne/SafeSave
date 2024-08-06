@@ -73,7 +73,7 @@ export default class FileController {
     return response.stream(fs.createReadStream(filePath))
   }
 
-  public async deleteFile({ params, session, response, view }: HttpContext) {
+public async deleteFile({ params, session, response, view }: HttpContext) {
     const fileId = params.id;
     const studentId = session.get('student').student_id;
 
@@ -90,19 +90,20 @@ export default class FileController {
     }
 
     // Lösche die Datei aus dem Dateisystem
-    const filePath = path.join(app.publicPath(), `uploads/${fileRecord.fileName}`);
+    const filePath = path.join(app.publicPath(), `uploads/${fileRecord.file_name}`);
     if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
     }
 
-    console.log(filePath);
+    console.log(`Deleted file at: ${filePath}`);
 
     // Lösche die Datei aus der Datenbank
     await db.from('file').where('file_id', fileId).delete();
 
+    // Lade alle verbleibenden Dateien des Benutzers
     const files = await db.from('file').select('*').where('student_id', studentId);
 
-    return view.render('pages/home', {files});
+    return view.render('pages/home', { files });
 }
 
   public async renameFile({ response, session, request, view }: HttpContext) {
