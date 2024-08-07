@@ -135,6 +135,6 @@ public async deleteFile({ params, session, response, view }: HttpContext) {
 
         const files = await db.from('file').select('*').where('student_id', studentId);
 
-        return view.render('pages/home', {files});
+        return view.render('pages/home', { files });
 }
 }
