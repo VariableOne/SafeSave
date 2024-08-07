@@ -112,7 +112,7 @@ public async deleteFile({ params, session, response, view }: HttpContext) {
     const studentId = session.get('student').student_id;
 
     // Find the existing file record
-    const fileRecord = await db.from('file').where('file_name', fileId).andWhere('student_id', studentId).first();
+    const fileRecord = await db.from('file').where('file_id', fileId).andWhere('student_id', studentId).first();
 
     if (!fileRecord) {
         return response.status(404).send('File not found');
@@ -127,7 +127,7 @@ public async deleteFile({ params, session, response, view }: HttpContext) {
 
     // Update the database record
     await db.from('file')
-        .where('file_name', fileId).andWhere('student_id', studentId)
+        .where('file_id', fileId).andWhere('student_id', studentId)
         .update({
             file_name: `${newFileName}${fileExtension}`,
             file_path: `uploads/${newFileName}${fileExtension}`

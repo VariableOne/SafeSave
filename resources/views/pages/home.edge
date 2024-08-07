@@ -43,76 +43,76 @@
       <ul class="list-group">
         @each(file in files)
           <li class="list-group-item d-flex justify-content-between align-items-center">
-              <!-- Container für die Dateiinformationen -->
-                <div>
-                  <strong>{{ file.file_name }}</strong>
-                </div>
+            <!-- Container für die Dateiinformationen -->
+            <div>
+              <strong>{{ file.file_name }}</strong>
+            </div>
             <div class="row">
               <!-- Container für den "Anzeigen"-Button -->
-            <div class="col">
-            <form action="/uploads/{{file.file_name}}" method="GET">
-                {{ csrfField() }}
-              <button class="btn btn-primary btn-sm">Öffnen</button>
-              <input type="hidden" id="openFiled" name="openFiled" value="{{file.file_name}}"/>
-            </form>
-          </div>
-            <!-- Container für den "Lösch"-Button -->
-            <div class="col">
-            <form action="/files/{{file.file_id}}" method="POST" onsubmit="return confirm('Sicher, dass Sie die Datei löschen wollen?');">
-              {{ csrfField() }}
-              <input type="hidden" name="_method" value="DELETE">
-              <button type="submit" class="btn btn-danger btn-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                  <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
-                  <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
-                </svg>
-              </button>
-            </form>
-          </div>
-          <div class="col">
-            <!-- Container für den "Umbennen"-Button -->
-            <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#exampleModal">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
-                <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
-              </svg>
-            </button>
-          </div>
-          <div class="col">
-          <a href="mailto:example@example.com?subject=Datei&body=Die%20Datei%20{{file.file_name}}%20ist%20anbei.%0D%0ABitte%20fügen%20Sie%20die%20Datei%20{{file.file_name}}%20als%20Anhang%20hinzu." class="btn btn-info btn-sm">Senden</a>
-        </div>
-        </div>
-          </li>
-
-          <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Dateinamen umbenennen</h5>
-                </div>
-
-                <form action="/rename" method="POST">
-                {{ csrfField() }}
-                <div class="modal-body">
-                  <input type="text" name="newFileName" id="newFileName" placeholder="Umbennen in...">
-                </div>
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-primary">Umbenennen</button>
+              <div class="col">
+                <form action="/uploads/{{file.file_name}}" method="GET">
+                  {{ csrfField() }}
+                  <button class="btn btn-primary btn-sm">Öffnen</button>
+                  <input type="hidden" id="openFiled" name="openFiled" value="{{file.file_name}}"/>
                 </form>
-                <input type="hidden" id="fileToRename" name="fileToRename" value="{{file.file_name}}"/>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-                </div>
+              </div>
+              <!-- Container für den "Lösch"-Button -->
+              <div class="col">
+                <form action="/files/{{file.file_id}}" method="POST" onsubmit="return confirm('Sicher, dass Sie die Datei löschen wollen?');">
+                  {{ csrfField() }}
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                      <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg>
+                  </button>
+                </form>
+              </div>
+              <div class="col">
+                <a href="mailto:example@example.com?subject=Datei&body=Die%20Datei%20{{file.file_name}}%20ist%20anbei.%0D%0ABitte%20fügen%20Sie%20die%20Datei%20{{file.file_name}}%20als%20Anhang%20hinzu." class="btn btn-info btn-sm">Senden</a>
+              </div>
+              <div class="col">
+                <!-- Container für den "Umbennen"-Button -->
+                <button class="btn btn-warning btn-sm rename-button" data-toggle="modal" data-target="#exampleModal" data-file-id="{{file.file_id}}" data-file-name="{{file.file_name}}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                  </svg>
+                </button>
               </div>
             </div>
-          </div>
+          </li>
         @endeach
       </ul>
       @else
       <!-- Wenn keine Dateien vorhanden sind -->
       <p>Noch keine Dateien vorhanden.</p>
       @endif
+    </div>
+  </div>
 </div>
-</div>
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Dateinamen umbenennen</h5>
+      </div>
+
+      <form action="/rename" method="POST">
+        {{ csrfField() }}
+        <div class="modal-body">
+          <input type="text" name="newFileName" id="newFileName" placeholder="Umbennen in...">
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="fileToRename" name="fileToRename" value=""/>
+          <button type="submit" class="btn btn-primary">Umbenennen</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
 </div>
   <!-- Button Container -->
   <div class="button-container">
@@ -138,6 +138,17 @@
     const form = document.getElementById('uploadForm');
     form.submit();
   }
+  document.addEventListener("DOMContentLoaded", function() {
+    $('#exampleModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var fileId = button.data('file-id'); // Extract info from data-* attributes
+      var fileName = button.data('file-name');
+      
+      var modal = $(this);
+      modal.find('.modal-title').text('Dateinamen umbenennen für ' + fileName);
+      modal.find('#fileToRename').val(fileId);
+    });
+  });
 </script>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
