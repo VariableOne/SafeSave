@@ -68,24 +68,30 @@ body {
   overflow: hidden;
   margin-top: 50px;
 }
-
 .card {
-  width: 80vw; /* Breite der Karte auf 80% der Ansichtsbreite setzen */
-  max-width: 900px; /* Maximale Breite der Karte setzen */
-  height: 60vh; /* Höhe der Karte auf 60% der Ansichts-Höhe setzen */
   display: flex;
-  flex-direction: row;
+  flex-direction: row; /* Beide Card-Seiten nebeneinander auf großen Bildschirmen */
+  flex-wrap: wrap; /* Erlaubt Umbruch auf kleineren Bildschirmen */
+  gap: 1rem; /* Abstand zwischen den Card-Seiten */
+  width: 80vw; /* Breite der Card auf 80% der Ansichtsbreite setzen */
+  max-width: 900px; /* Maximale Breite der Card setzen */
+  height: auto; /* Höhe der Card automatisch anpassen */
   border-radius: 10px;
-  overflow: hidden; /* Verhindert, dass Inhalt außerhalb der Karte angezeigt wird */
+  overflow: hidden; /* Verhindert, dass Inhalt außerhalb der Card angezeigt wird */
 }
+
+.card-left, .card-right {
+  flex: 1; /* Beide Seiten der Card wachsen gleichmäßig */
+  min-width: 300px; /* Minimale Breite der Card-Seiten */
+}
+
 .card-left {
-  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center; /* Zentriert den Inhalt vertikal */
   align-items: center; /* Zentriert den Inhalt horizontal */
-  background: #f8f9fa; /* Optional: helles Hintergrund für den leeren Bereich */
-  padding: 1rem; /* Optional: Padding für den Innenabstand */
+  background: #f8f9fa; /* Hellgrauer Hintergrund für den leeren Bereich */
+  padding: 1rem; /* Innenabstand */
 }
 
 .card-left .text-center {
@@ -93,21 +99,27 @@ body {
 }
 
 .card-left img {
-  max-width: 80%; /* Optional: Bildgröße anpassen */
+  max-width: 100%; /* Bild wird innerhalb des Containers skaliert */
   height: auto; /* Höhe automatisch anpassen, um das Seitenverhältnis zu bewahren */
 }
+
 .card-right {
-  flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to right, #FFA500, #FF4500);
-  color: white;
-  padding: 2rem;
+  background: linear-gradient(to right, #FFA500, #FF4500); /* Farbverlauf für den Hintergrund */
+  color: white; /* Textfarbe */
+  padding: 2rem; /* Innenabstand */
 }
-.card-body {
-  width: 100%;
+
+/* Media Query für kleinere Bildschirme */
+@media (max-width: 768px) {
+  .card {
+    flex-direction: column; /* Stapelt die Card-Seiten übereinander */
+  }
 }
+
 .btn-primary {
   background-color: #FF4500;
   border-color: #FF4500;
