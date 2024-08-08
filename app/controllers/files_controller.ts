@@ -3,8 +3,12 @@ import db from "@adonisjs/lucid/services/db";
 import app from "@adonisjs/core/services/app";
 import fs from 'fs'
 import mime from 'mime-types'
-import path from "path";
+import path, { dirname, join } from "path";
+import hash from "@adonisjs/core/services/hash";
+import { fileURLToPath } from "url";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default class FileController {
   public async showUploadForm({ view }: HttpContext) {
@@ -73,36 +77,45 @@ export default class FileController {
     return response.stream(fs.createReadStream(filePath))
   }
 
-public async deleteFile({ params, session, response, view }: HttpContext) {
-    const fileId = params.id;
-    const studentId = session.get('student').student_id;
+  public async deleteFile({ request, session, response, view }: HttpContext) {
+    const password = request.input('password');
+    const fileId = request.input('fileToDelete');
+    const student = session.get('student');
 
-    // Hol die Datei von der Datenbank
-    const fileRecord = await db.from('file').where('file_id', fileId).first();
+    // Benutzer verifizieren
+    const result = await db.from('student').select('*').where('student_id', student.student_id).first();
 
-    if (!fileRecord) {
-        return response.notFound('File not found');
+    if (!result) {
+        // Fehlermeldung, falls der Benutzer nicht gefunden wird
+        return response.status(404).send('Benutzer nicht gefunden.');
     }
 
-    // Überprüfe, ob die Datei zum aktuellen Benutzer gehört
-    if (fileRecord.student_id !== studentId) {
-        return response.forbidden('Unauthorized');
+    const authenticated = await hash.verify(result.password, password);
+
+    if (!authenticated) {
+        // Fehlermeldung bei falschem Passwort, leitet zurück mit einer Nachricht
+        const files = await db.from('file').select('*').where('student_id', student.student_id);
+        return view.render('pages/home', { files, deleteError: 'Das Passwort ist falsch.' });
     }
 
-    // Lösche die Datei aus dem Dateisystem
-    const filePath = path.join(app.publicPath(), `uploads/${fileRecord.file_name}`);
-    if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
+    // Wenn das Passwort korrekt ist, Datei aus der Datenbank löschen
+    const file = await db.from('file').where('file_id', fileId).first();
+    if (file) {
+        const filePath = join(__dirname, '..', 'uploads', file.file_name); // Dateipfad im Dateisystem
+
+        // Datei aus dem Dateisystem löschen
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                console.error('Fehler beim Löschen der Datei:', err);
+            }
+        });
+
+        // Datei aus der Datenbank löschen
+        await db.from('file').where('file_id', fileId).delete();
     }
 
-    console.log(`Deleted file at: ${filePath}`);
-
-    // Lösche die Datei aus der Datenbank
-    await db.from('file').where('file_id', fileId).delete();
-
-    // Lade alle verbleibenden Dateien des Benutzers
-    const files = await db.from('file').select('*').where('student_id', studentId);
-
+    // Nach dem Löschen alle Dateien neu laden und die Seite neu rendern
+    const files = await db.from('file').select('*').where('student_id', student.student_id);
     return view.render('pages/home', { files });
 }
 

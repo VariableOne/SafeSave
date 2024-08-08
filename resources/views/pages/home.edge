@@ -59,10 +59,9 @@
               </div>
               <!-- Container für den "Lösch"-Button -->
               <div class="px-1 flex-grow-1">
-                <form action="/files/{{file.file_id}}" method="POST" onsubmit="return confirm('Sicher, dass Sie die Datei löschen wollen?');">
                   {{ csrfField() }}
                   <input type="hidden" name="_method" value="DELETE">
-                  <button type="submit" class="btn btn-danger btn-sm w-75">
+                  <button type="submit" class="btn btn-danger btn-sm w-75" data-toggle="modal" data-target="#deleteModal" data-file-id="{{ file.file_id }}" data-file-name="{{ file.file_name }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
                       <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
                       <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
@@ -116,6 +115,35 @@
     </div>
   </div>
 </div>
+
+<!-- Passwort-Abfrage Modal -->
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Passwort bestätigen</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <form id="deleteForm" action="/delete" method="POST">
+              {{ csrfField() }}
+              <div class="modal-body">
+                  <div class="form-group">
+                      <label for="password">Passwort</label>
+                      <input type="password" class="form-control" name="password" id="password" placeholder="Passwort" required>
+                  </div>
+                  <input type="hidden" id="fileToDelete" name="fileToDelete" value=""/>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                  <button type="submit" class="btn btn-danger">Löschen</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
+
   <!-- Button Container -->
   <div class="button-container">
     <button type="button" class="btn btn-primary">
@@ -151,6 +179,18 @@
       modal.find('#fileToRename').val(fileId);
     });
   });
+  document.addEventListener("DOMContentLoaded", function() {
+    $('#deleteModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var fileId = button.data('file-id'); // Extract info from data-* attributes
+        var fileName = button.data('file-name');
+
+        var modal = $(this);
+        modal.find('.modal-title').text('Datei löschen: ' + fileName);
+        modal.find('#fileToDelete').val(fileId);
+    });
+});
+
 </script>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

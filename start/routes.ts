@@ -30,6 +30,6 @@ router.get('/upload', [FilesController, 'showUploadForm'])
 router.post('/upload', [FilesController, 'upload'])
 
 router.get('/files/:id', [FilesController, 'show'])
-router.post('/files/:id',  [FilesController, 'deleteFile'])
+router.post('/delete',  [FilesController, 'deleteFile'])
 
 router.post('/rename', [FilesController, 'renameFile'])
