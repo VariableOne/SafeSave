@@ -3,12 +3,11 @@ import db from "@adonisjs/lucid/services/db";
 import app from "@adonisjs/core/services/app";
 import fs from 'fs'
 import mime from 'mime-types'
-import path, { dirname, join } from "path";
 import hash from "@adonisjs/core/services/hash";
-import { fileURLToPath } from "url";
+import path, { join } from "path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+
+const basePath = '/uploads';
 
 export default class FileController {
   public async showUploadForm({ view }: HttpContext) {
@@ -86,35 +85,34 @@ export default class FileController {
     const result = await db.from('student').select('*').where('student_id', student.student_id).first();
 
     if (!result) {
-        // Fehlermeldung, falls der Benutzer nicht gefunden wird
         return response.status(404).send('Benutzer nicht gefunden.');
     }
 
     const authenticated = await hash.verify(result.password, password);
 
     if (!authenticated) {
-        // Fehlermeldung bei falschem Passwort, leitet zurück mit einer Nachricht
         const files = await db.from('file').select('*').where('student_id', student.student_id);
         return view.render('pages/home', { files, deleteError: 'Das Passwort ist falsch.' });
     }
 
-    // Wenn das Passwort korrekt ist, Datei aus der Datenbank löschen
     const file = await db.from('file').where('file_id', fileId).first();
     if (file) {
-        const filePath = join(__dirname, '..', 'uploads', file.file_name); // Dateipfad im Dateisystem
+        // Dynamisch den vollständigen Pfad zur Datei erzeugen
+        const filePath = join('C:\\Users\\uemmu\\SafeSave\\public', 'uploads', file.file_name);
+        console.log('Versuche, Datei zu löschen:', filePath);
 
-        // Datei aus dem Dateisystem löschen
         fs.unlink(filePath, (err) => {
             if (err) {
                 console.error('Fehler beim Löschen der Datei:', err);
+            } else {
+                console.log('Datei erfolgreich gelöscht:', filePath);
             }
         });
 
-        // Datei aus der Datenbank löschen
+        // Datei auch aus der Datenbank löschen
         await db.from('file').where('file_id', fileId).delete();
     }
 
-    // Nach dem Löschen alle Dateien neu laden und die Seite neu rendern
     const files = await db.from('file').select('*').where('student_id', student.student_id);
     return view.render('pages/home', { files });
 }
