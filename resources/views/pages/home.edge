@@ -50,6 +50,22 @@
   <div class="scrollable-container">
     <div class="text-center">
       <h4 style="color: grey;">Dateien</h4>
+  
+      @if(folders && folders.length > 0)  
+      <ul class="list-group">
+        @each(folder in folders)
+        <a href="/folder/{{ folder.folder_id }}" class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-stretch mb-3 folder-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder" viewBox="0 0 16 16">
+            <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139q.323-.119.684-.12h5.396z"/>
+          </svg>
+          <span>{{ folder.folder_name }}</span>
+        </a>
+        @endeach
+      </ul>
+      @else
+      <p>Keine Ordner vorhanden.</p>
+      @endif
+
       @if(files.length > 0)
       <!-- Wenn Dateien vorhanden sind -->
       <ul class="list-group">
@@ -94,6 +110,7 @@
               </div>
             </div>
           </li>
+        </li>
         @endeach
       </ul>
       @else
@@ -104,6 +121,7 @@
   </div>
 </div>
 
+<!--Dateinamen umbenennen-->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -120,6 +138,30 @@
         <div class="modal-footer">
           <input type="hidden" id="fileToRename" name="fileToRename" value=""/>
           <button type="submit" class="btn btn-primary">Umbenennen</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+<!--Neuen Ordner anlegen-->
+<div class="modal fade" id="createFolder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ordner anlegen</h5>
+      </div>
+
+      <form action="/createFolder" method="POST">
+        {{ csrfField() }}
+        <div class="modal-body">
+          <input type="text" name="folderName" id="folderName" placeholder="Geben Sie einen Namen an für Ihren Ordner">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Erstellen</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
         </div>
       </form>
@@ -158,7 +200,7 @@
 
   <!-- Button Container -->
   <div class="button-container">
-    <button type="button" class="btn btn-primary">
+    <button type="button" class="btn btn-primary" id="createFolder" data-toggle="modal" data-target="#createFolder" >
       Neuer Ordner
     </button>
     <button type="button" class="btn btn-secondary"  onclick="triggerFileUpload()">Datei hochladen</button>
@@ -171,7 +213,6 @@
 
 </body>
 <script>
-
   function triggerFileUpload() {
     document.getElementById('fileInput').click();
   }
@@ -180,6 +221,13 @@
     const form = document.getElementById('uploadForm');
     form.submit();
   }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    $('#createFolder').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var modal = $(this);
+    });
+  });
   document.addEventListener("DOMContentLoaded", function() {
     $('#exampleModal').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget); // Button that triggered the modal

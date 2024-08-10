@@ -7,8 +7,6 @@ import hash from "@adonisjs/core/services/hash";
 import path, { join } from "path";
 
 
-const basePath = '/uploads';
-
 export default class FileController {
   public async showUploadForm({ view }: HttpContext) {
     // Zeigt die Upload-Seite an

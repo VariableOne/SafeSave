@@ -8,8 +8,10 @@
 */
 
 import FilesController from '#controllers/files_controller';
+import FolderController from '#controllers/folder_controller';
 import StudentsController from '#controllers/student_controller';
 import router from '@adonisjs/core/services/router'
+
 
 router.on('/').render('pages/auth')
 
@@ -33,3 +35,4 @@ router.get('/files/:id', [FilesController, 'show'])
 router.post('/delete',  [FilesController, 'deleteFile'])
 
 router.post('/rename', [FilesController, 'renameFile'])
+router.post('/createFolder', [FolderController, 'createFolder'])
