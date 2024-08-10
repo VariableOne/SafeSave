@@ -2,8 +2,6 @@ import { HttpContext } from "@adonisjs/core/http";
 import db from "@adonisjs/lucid/services/db";
 
 export default class FolderController{
-
-
   
     public async createFolder({ request, view, session }: HttpContext) {
 
@@ -24,6 +22,12 @@ export default class FolderController{
 
         // View rendern und sicherstellen, dass `folders` und `files` immer Arrays sind
         return view.render('pages/home', { folders: folders || [], files: files || [] });
+    }
+
+    public async getFolder({ view }: HttpContext){
+
+
+        return view.render('pages/insideTheFolder');
     }
 
 }
