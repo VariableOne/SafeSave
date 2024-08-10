@@ -70,11 +70,12 @@ export default class StudentsController {
                 username: result.username
             };
 
-            const files = await db.from('file').select('*').where('student_id', student.student_id);
-
             session.put('student', student);
 
-            return view.render('pages/home', { student, files });
+            const files = await db.from('file').select('*').where('student_id', student.student_id);
+            const folders = await db.from('folder').select('*').where('student_id', student.student_id);
+
+            return view.render('pages/home', { student, files, folders });
         }
     }
 
