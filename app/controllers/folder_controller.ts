@@ -29,7 +29,7 @@ export default class FolderController{
         const folderId = request.input('folderId')
         const files = await db.from('file').where('folder_id', folderId).andWhere('student_id', session.get('student').student_id).select('*');
 
-        return view.render('pages/insideTheFolder', {folderId, files:files || []});
+        return view.render('pages/insideTheFolder', {folderId, files:files || null});
     }
 
 }
