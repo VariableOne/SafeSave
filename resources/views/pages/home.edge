@@ -58,11 +58,11 @@
       </ul>
       @endif
 
+      @if(!folders)
       @if(files.length > 0)
       <!-- Wenn Dateien vorhanden sind -->
       <ul class="list-group">
         @each(file in files)
-        @if(!file.parent_folder_id)
         <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-stretch mb-3">
           <!-- Container für die Dateiinformationen -->
           <div class="px-1 flex-grow-1">
@@ -103,9 +103,9 @@
               </div>
             </div>
           </li>
-          @endif
         @endeach
       </ul>
+      @endif
       @endif
     </div>
   </div>
