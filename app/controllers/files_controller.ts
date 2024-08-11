@@ -41,7 +41,8 @@ export default class FileController {
       if (!student) {
         return response.unauthorized('Student not authenticated')
       }
-      console.log('File Size:', file.size);  // Gibt die Dateigröße in der Konsole aus
+
+      const folderIdToInsert = folderId ? folderId : null;
 
       await db.table('file').insert({
         file_name: file.clientName,
@@ -49,13 +50,21 @@ export default class FileController {
         file_format: file.extname,
         file_path: `uploads/${file.fileName}`,
         student_id: student.student_id,
-        folder_id: folderId
+        folder_id: folderIdToInsert 
       });
 
     console.log('File uploaded and saved to database successfully '+ student.student_id);
-      
-    const files = await db.from('file').select('*').where('student_id', student.student_id).andWhere('folder_id', folderId);
-    const folders = await db.from('folder').select('*').where('student_id', student.student_id);
+   
+  // Query für Dateien und Ordner
+  const query = db.from('file').select('*').where('student_id', student.student_id);
+  
+  // Füge die Bedingung für folder_id nur hinzu, wenn folderId definiert ist
+  if (folderIdToInsert) {
+    query.andWhere('folder_id', folderIdToInsert);
+  }
+
+  const files = await query;
+  const folders = await db.from('folder').select('*').where('student_id', student.student_id);
 
     return view.render('pages/home', { files, folders });
   }

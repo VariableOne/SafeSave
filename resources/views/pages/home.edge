@@ -23,9 +23,9 @@
 <div class="container">
   <div class="scrollable-container">
     <div class="text-center">
-      <h4 style="color: grey;">Dateien</h4>
+      <h4 style="color: grey;">Dein Dateisystem</h4>
   
-      @if(folders.length === 0 || files.length === 0)
+      @if(folders.length === 0 || files.length < 0)
       <p>Noch keine Dateien oder Ordner hochgeladen</p>
       @endif
 
@@ -116,7 +116,7 @@
     <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" style="display:none;">
     {{ csrfField() }}
     <input type="hidden" id="student" name="student" value="{{ session.get('student').username }}"/>
-    <input type="hidden" id="fileInput" name="fieldName" onchange="uploadFile()"/>
+    <input type="file" id="fileInput" name="fieldName" onchange="uploadFile()"/>
   </form>
 </div>
 </body>

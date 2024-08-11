@@ -46,6 +46,9 @@
       <form action="/createFolder" method="POST">
         {{ csrfField() }}
         <div class="modal-body">
+         @if(folderId)
+            <input type="hidden" id="folderId" name="folderId" value="{{ folderId }}"/>
+          @endif
           <input type="text" name="folderName" id="folderName" placeholder="Geben Sie einen Namen an für Ihren Ordner">
         </div>
         <div class="modal-footer">
