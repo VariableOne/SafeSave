@@ -24,10 +24,12 @@ export default class FolderController{
         return view.render('pages/home', { folders: folders || [], files: files || [] });
     }
 
-    public async getFolder({ view }: HttpContext){
+    public async getFolder({ view, request, session }: HttpContext){
 
+        const folderId = request.input('folderId')
+        const files = await db.from('file').where('folder_id', folderId).andWhere('student_id', session.get('student').student_id).select('*');
 
-        return view.render('pages/insideTheFolder');
+        return view.render('pages/insideTheFolder', {folderId, files:files || []});
     }
 
 }

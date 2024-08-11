@@ -7,44 +7,19 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
   <title> SafeSave Main Page </title>
  @vite(['resources/css/app.css', 'resources/js/app.js'])
+ @vite(['resources/js/app.js', 'resources/js/app.js'])
 </head>
 <body>
 @include('pages/header')
+@include('pages/logout')
+@include('pages/modals')
 
-<div class="row" style="display: flex; flex-direction: column; width: 100%;">
-  <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-    <form action="/home" method="POST">
-      {{csrfField()}}
-      <br>
-    <a class="btn btn-primary mr-2" href="/logout" style="border-radius: 5px; ">
-    <h4 style="color: white; display: flex; align-items: center; margin: 0;" href="/auth">
-      Logout 
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
-        <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
-        <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-      </svg>
-    </h4>
-    </a>
-    </form>
-  </div>
-  <div class="col">
-    <div style="margin-top: 20px; margin-left: 20px;">
-      <h3 style="color: white;">Wilkommen! Hier sind deine Dateien {{session.get('student').username}}</h3>
-    </div>
+<div class="col">
+  <div style="margin-top: 20px; margin-left: 20px;">
+    <h3 style="color: white;">Wilkommen! Hier sind deine Dateien {{session.get('student').username}}</h3>
   </div>
 </div>
-
-<div>
-  @if(deleteError)
-  <div class="alert alert-danger d-flex align-items-center" role="alert" id="warning" style="visibility: visible;">
-    {{deleteError}}
-    <button type="button" class="btn-close" aria-label="Close"
-        onclick="document.getElementById('warning').style.visibility = 'hidden';"
-        id="close_btn"></button>
-  </div>
-  @endif
 </div>
-
 <div class="container">
   <div class="scrollable-container">
     <div class="text-center">
@@ -53,19 +28,30 @@
       @if(folders && folders.length > 0)  
       <ul class="list-group">
         @each(folder in folders)
-        <a href="/folder/{{ folder.folder_id }}" class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-stretch mb-3 folder-item">
+        <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-stretch mb-3">
+        <form action ="/folder/{{ folder.folder_id }}" method="GET">     
+          {{ csrfField() }}    
+          <div class="d-flex flex-wrap justify-content-between w-100">
+            <div class="px-1 flex-grow-1">
           <span>{{ folder.folder_name }}</span>
+          </div>
+          <div class="px-1 flex-grow-1">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder" viewBox="0 0 16 16">
             <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139q.323-.119.684-.12h5.396z"/>
           </svg>
+          </div>
+          <div class="px-1 flex-grow-1">
+          <button type ="submit" class="btn btn-primary btn-sm w-100">Öffnen</button>
+          <input type="hidden" id="folderId" name="folderId" value="{{folder.folder_id}}"/>
+          </div>
+          </div>
         </a>
+        </li>
         @endeach
       </ul>
-      @else
-      <p>Keine Ordner vorhanden.</p>
       @endif
 
-      @if(files.length > 0)
+      @if(files.length > 0 && files.folder_id === null)
       <!-- Wenn Dateien vorhanden sind -->
       <ul class="list-group">
         @each(file in files)
@@ -109,7 +95,6 @@
               </div>
             </div>
           </li>
-        </li>
         @endeach
       </ul>
       @else
@@ -117,83 +102,6 @@
       <p>Noch keine Dateien vorhanden.</p>
       @endif
     </div>
-  </div>
-</div>
-
-<!--Dateinamen umbenennen-->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Dateinamen umbenennen</h5>
-      </div>
-
-      <form action="/rename" method="POST">
-        {{ csrfField() }}
-        <div class="modal-body">
-          <input type="text" name="newFileName" id="newFileName" placeholder="Umbennen in...">
-        </div>
-        <div class="modal-footer">
-          <input type="hidden" id="fileToRename" name="fileToRename" value=""/>
-          <button type="submit" class="btn btn-primary">Umbenennen</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-        </div>
-      </form>
-      
-    </div>
-  </div>
-</div>
-
-<!--Neuen Ordner anlegen-->
-<div class="modal fade" id="createFolder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ordner anlegen</h5>
-      </div>
-
-      <form action="/createFolder" method="POST">
-        {{ csrfField() }}
-        <div class="modal-body">
-          <input type="text" name="folderName" id="folderName" placeholder="Geben Sie einen Namen an für Ihren Ordner">
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Erstellen</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-        </div>
-      </form>
-      
-    </div>
-  </div>
-</div>
-
-<!-- Passwort-Abfrage Modal -->
-<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-      <div class="modal-content">
-          <div class="modal-header">
-              <h5 class="modal-title">Passwort bestätigen</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
-          </div>
-          <form id="deleteForm" action="/delete" method="POST">
-              {{ csrfField() }}
-              <div class="modal-body">
-                  <div class="form-group">
-                      <label for="password">Passwort</label>
-                      <input type="password" class="form-control" name="password" id="password" placeholder="Passwort" required>
-                  </div>
-                  <input type="hidden" id="fileToDelete" name="fileToDelete" value=""/>
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
-                  <button type="submit" class="btn btn-danger">Löschen</button>
-              </div>
-          </form>
-      </div>
   </div>
 </div>
 
@@ -206,10 +114,9 @@
     <form id="uploadForm" action="/upload" method="POST" enctype="multipart/form-data" style="display:none;">
     {{ csrfField() }}
     <input type="hidden" id="student" name="student" value="{{ session.get('student').username }}"/>
-    <input type="file" id="fileInput" name="fieldName" onchange="uploadFile()"/>
+    <input type="hidden" id="fileInput" name="fieldName" onchange="uploadFile()"/>
   </form>
-  </div>
-
+</div>
 </body>
 <script>
   function triggerFileUpload() {
@@ -220,38 +127,7 @@
     const form = document.getElementById('uploadForm');
     form.submit();
   }
-
-  document.addEventListener("DOMContentLoaded", function() {
-    $('#createFolder').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget); // Button that triggered the modal
-      var modal = $(this);
-    });
-  });
-  document.addEventListener("DOMContentLoaded", function() {
-    $('#exampleModal').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget); // Button that triggered the modal
-      var fileId = button.data('file-id'); // Extract info from data-* attributes
-      var fileName = button.data('file-name');
-      
-      var modal = $(this);
-      modal.find('.modal-title').text('Dateinamen umbenennen für ' + fileName);
-      modal.find('#fileToRename').val(fileId);
-    });
-  });
-  document.addEventListener("DOMContentLoaded", function() {
-    $('#deleteModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var fileId = button.data('file-id'); // Extract info from data-* attributes
-        var fileName = button.data('file-name');
-
-        var modal = $(this);
-        modal.find('.modal-title').text('Datei löschen: ' + fileName);
-        modal.find('#fileToDelete').val(fileId);
-    });
-});
-
 </script>
-</div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

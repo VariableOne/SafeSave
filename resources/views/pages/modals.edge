@@ -1,0 +1,87 @@
+  <div>
+    @if(deleteError)
+    <div class="alert alert-danger d-flex align-items-center" role="alert" id="warning" style="visibility: visible;">
+      {{deleteError}}
+      <button type="button" class="btn-close" aria-label="Close"
+          onclick="document.getElementById('warning').style.visibility = 'hidden';"
+          id="close_btn"></button>
+    </div>
+    @endif
+  </div>
+
+<!--Dateinamen umbenennen-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Dateinamen umbenennen</h5>
+      </div>
+
+      <form action="/rename" method="POST">
+        {{ csrfField() }}
+        <div class="modal-body">
+          <input type="text" name="newFileName" id="newFileName" placeholder="Umbennen in...">
+        </div>
+        <div class="modal-footer">
+          <input type="hidden" id="fileToRename" name="fileToRename" value=""/>
+          <button type="submit" class="btn btn-primary">Umbenennen</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+<!--Neuen Ordner anlegen-->
+<div class="modal fade" id="createFolder" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Ordner anlegen</h5>
+      </div>
+
+      <form action="/createFolder" method="POST">
+        {{ csrfField() }}
+        <div class="modal-body">
+          <input type="text" name="folderName" id="folderName" placeholder="Geben Sie einen Namen an für Ihren Ordner">
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Erstellen</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+</div>
+
+<!-- Passwort-Abfrage Modal -->
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title">Passwort bestätigen</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <form id="deleteForm" action="/delete" method="POST">
+              {{ csrfField() }}
+              <div class="modal-body">
+                  <div class="form-group">
+                      <label for="password">Passwort</label>
+                      <input type="password" class="form-control" name="password" id="password" placeholder="Passwort" required>
+                  </div>
+                  <input type="hidden" id="fileToDelete" name="fileToDelete" value=""/>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
+                  <button type="submit" class="btn btn-danger">Löschen</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>

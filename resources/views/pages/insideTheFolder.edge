@@ -9,25 +9,12 @@
     <title>Inside The Folder</title>
     
  @vite(['resources/css/app.css', 'resources/js/app.js'])
+ @vite(['resources/js/app.js', 'resources/js/app.js'])
 </head>
 <body>
 @include('pages/header')
-<div class="row" style="display: flex; flex-direction: column; width: 100%;">
-  <!-- Logout-Button -->
-  <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-    <form action="/home" method="POST">
-      {{csrfField()}}
-      <a class="btn btn-primary" href="/logout" style="border-radius: 5px; ">
-        <h4 style="color: white; display: flex; align-items: center; margin: 0;">
-          Logout 
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right ms-2" viewBox="0 0 16 16">
-            <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z"/>
-            <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
-          </svg>
-        </h4>
-      </a>
-    </form>
-  </div>
+@include('pages/logout')
+@include('pages/modals')
   
   <!-- Zurück-Button -->
   <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
@@ -38,23 +25,96 @@
       Zurück
     </a>
   </div>
-  
-  <!-- Willkommenstext -->
-  <div class="col">
-    <div style="margin-top: 20px; margin-left: 20px;">
-      <h3 style="color: white;">Willkommen! Hier sind deine Dateien {{session.get('student').username}}</h3>
-    </div>
-  </div>
-</div>
-  
+
 <div class="container">
     <div class="scrollable-container">
       <div class="text-center">
         <h4 style="color: grey;">Dateien</h4>
+
+      @if(files.length > 0)
+      <!-- Wenn Dateien vorhanden sind -->
+      <ul class="list-group">
+        @each(file in files)
+        <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-stretch mb-3">
+          <!-- Container für die Dateiinformationen -->
+          <div class="px-1 flex-grow-1">
+              <strong>{{ file.file_name }}</strong>
+            </div>
+            <br>
+            <div class="d-flex flex-wrap justify-content-between w-100">
+              <!-- Container für den "Anzeigen"-Button -->
+              <div class="px-1 flex-grow-1">
+                <form action="/uploads/{{file.file_name}}" method="GET">
+                  {{ csrfField() }}
+                  <button class="btn btn-primary btn-sm w-75">Öffnen</button>
+                  <input type="hidden" id="openFiled" name="openFiled" value="{{file.file_name}}"/>
+                </form>
+              </div>
+              <!-- Container für den "Lösch"-Button -->
+              <div class="px-1 flex-grow-1">
+                  {{ csrfField() }}
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn btn-danger btn-sm w-75" data-toggle="modal" data-target="#deleteModal" data-file-id="{{ file.file_id }}" data-file-name="{{ file.file_name }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z"/>
+                      <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z"/>
+                    </svg>
+                  </button>
+                </form>
+              </div>
+              <div class="px-1 flex-grow-1">
+                <a href="mailto:example@example.com?subject=Datei&body=Die%20Datei%20{{file.file_name}}%20ist%20anbei.%0D%0ABitte%20fügen%20Sie%20die%20Datei%20{{file.file_name}}%20als%20Anhang%20hinzu." class="btn btn-info btn-sm w-75">Senden</a>
+              </div>
+              <div class="px-1 flex-grow-1">
+                <!-- Container für den "Umbennen"-Button -->
+                <button class="btn btn-warning btn-sm w-75 rename-button" data-toggle="modal" data-target="#exampleModal" data-file-id="{{file.file_id}}" data-file-name="{{file.file_name}}">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+                    <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+        </li>
+        @endeach
+      </ul>
+      @else
+      <!-- Wenn keine Dateien vorhanden sind -->
+      <p>Noch keine Dateien vorhanden.</p>
+      @endif
+    </div>
+  </div>
+</div>
   </div>  
 </div> 
 </div> 
+
+<div class="button-container">
+  <button type="button" class="btn btn-secondary" onclick="triggerFileUpload('{{ folderId }}')">Datei hochladen</button>
+  <form id="uploadForm" action="/folder/{{ folderId }}" method="POST" enctype="multipart/form-data" style="display:none;">
+     {{ csrfField() }}
+     <input type="hidden" id="student" name="student" value="{{ session.get('student').username }}"/>
+     <input type="hidden" id="folderId" name="folderId" value="{{ folderId }}"/> <!-- Initially empty -->
+     <input type="file" id="fileInput" name="fieldName" onchange="uploadFile()"/>
+  </form>
+</div>
+
 </body>
+<script>
+function triggerFileUpload(folderId) {
+    // Überprüfe, ob die folderId tatsächlich übergeben wird
+    if (folderId) {
+        document.getElementById('folderId').value = folderId;  // Setzt die folderId in das versteckte Input-Feld
+        document.getElementById('fileInput').click();  // Öffnet das Datei-Auswahl-Dialog
+    } else {
+        console.error('folderId is undefined');
+    }
+}
+
+  function uploadFile() {
+    const form = document.getElementById('uploadForm');
+    form.submit();
+  }
+</script>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

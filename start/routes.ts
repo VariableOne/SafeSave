@@ -19,21 +19,22 @@ router.post('/registration', [StudentsController, 'registerProcess']);
 router.get('/registration', async ({ view }) => {
   return view.render('pages/registration')
 })
-router.post('/home', [StudentsController, 'loginProcess'])
-router.get('/home', [StudentsController, 'loginForm'])
+
+router.post('/auth', async ({ view }) => {
+  return view.render('pages/auth')
+})
 
 router.get('/logout', [StudentsController, 'logout'])
 
-  router.post('/auth', async ({ view }) => {
-    return view.render('pages/auth')
-  })
+router.post('/home', [StudentsController, 'loginProcess'])
+router.get('/home', [StudentsController, 'loginForm'])
 
-router.get('/upload', [FilesController, 'showUploadForm'])
 router.post('/upload', [FilesController, 'upload'])
-
-router.get('/files/:id', [FilesController, 'show'])
+router.get('/upload', [FilesController, 'showUploadForm'])
 router.post('/delete',  [FilesController, 'deleteFile'])
-
+router.get('/files/:id', [FilesController, 'show'])
 router.post('/rename', [FilesController, 'renameFile'])
+
 router.post('/createFolder', [FolderController, 'createFolder'])
 router.get('/folder/:id',  [FolderController, 'getFolder'])
+router.post('/folder/:id',  [FilesController, 'upload'])

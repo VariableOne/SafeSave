@@ -14,7 +14,7 @@ export default class FileController {
     return view.render('/upload', { files });
   }
 
-  public async upload({ request, response, view }: HttpContext) {
+  public async upload({ request, response, params, view }: HttpContext) {
 
     const file = request.file('fieldName', {
         size: '500mb',
@@ -34,7 +34,8 @@ export default class FileController {
                  )  
 
       const studentName = request.input('student');
-
+      const folderId = params.id;
+      console.log(folderId);
       const student = await db.from('student').where('username', studentName).first();
 
       if (!student) {
@@ -42,21 +43,21 @@ export default class FileController {
       }
       console.log('File Size:', file.size);  // Gibt die Dateigröße in der Konsole aus
 
-
       await db.table('file').insert({
         file_name: file.clientName,
         file_size: file.size,
         file_format: file.extname,
         file_path: `uploads/${file.fileName}`,
-        student_id: student.student_id
+        student_id: student.student_id,
+        folder_id: folderId
       });
 
     console.log('File uploaded and saved to database successfully '+ student.student_id);
       
-    const files = await db.from('file').select('*').where('student_id', student.student_id);
+    const files = await db.from('file').select('*').where('student_id', student.student_id).andWhere('folder_id', folderId);
+    const folders = await db.from('folder').select('*').where('student_id', student.student_id);
 
-    return view.render('pages/home', {files});
-
+    return view.render('pages/home', { files, folders });
   }
 
   public async show({ params, response }: HttpContext) {
@@ -112,7 +113,8 @@ export default class FileController {
     }
 
     const files = await db.from('file').select('*').where('student_id', student.student_id);
-    return view.render('pages/home', { files });
+    const folders = await db.from('folder').select('*').where('student_id', student.student_id);
+    return view.render('pages/home', { files, folders });
 }
 
   public async renameFile({ response, session, request, view }: HttpContext) {
@@ -143,7 +145,8 @@ export default class FileController {
         });
 
         const files = await db.from('file').select('*').where('student_id', studentId);
+        const folders = await db.from('folder').select('*').where('student_id', studentId);
 
-        return view.render('pages/home', { files });
+        return view.render('pages/home', { files,folders });
 }
 }
