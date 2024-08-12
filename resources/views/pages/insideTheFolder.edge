@@ -52,8 +52,15 @@
           <input type="hidden" id="folderId" name="folderId" value="{{subfolder.folder_id}}"/>
           </div>
           </form>
-          </div>
-        </a>
+
+          <form action ="/deleteFolder/{{ subfolder.folder_id }}" method="POST">   
+            {{ csrfField() }} 
+          <input type="hidden" name="_method" value="DELETE"> 
+          <div class="px-1 flex-grow-1">
+            <button type ="submit" class="btn btn-secondary btn-sm w-100">Löschen</button>
+            <input type="hidden" id="folderId" name="folderId" value="{{subfolder.folder_id}}"/>
+            </div>
+          </form>
         </li>
         @endeach
       </ul>

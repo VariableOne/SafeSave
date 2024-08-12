@@ -30,11 +30,12 @@ router.post('/home', [StudentsController, 'loginProcess'])
 router.get('/home', [StudentsController, 'loginForm'])
 
 router.post('/upload', [FilesController, 'upload'])
+router.post('/folder/:id',  [FilesController, 'upload'])
 router.get('/upload', [FilesController, 'showUploadForm'])
 router.post('/delete',  [FilesController, 'deleteFile'])
 router.get('/files/:id', [FilesController, 'show'])
 router.post('/rename', [FilesController, 'renameFile'])
 
 router.post('/createFolder', [FolderController, 'createFolder'])
+router.post('/deleteFolder/:Id', [FolderController, 'deleteFolder'] )
 router.get('/folder/:id',  [FolderController, 'getFolder'])
-router.post('/folder/:id',  [FilesController, 'upload'])
