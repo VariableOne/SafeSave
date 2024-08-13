@@ -25,5 +25,17 @@
         var modal = $(this);
         modal.find('.modal-title').text('Datei löschen: ' + fileName);
         modal.find('#fileToDelete').val(fileId);
-    });
+    });  
+  });
+
+document.addEventListener("DOMContentLoaded", function() {
+  $('#deleteModalForFolder').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget); // Button that triggered the modal
+      var folderId = button.data('folder-id'); // Extract info from data-* attributes
+      var folderName = button.data('folder-name');
+
+      var modal = $(this);
+      modal.find('.modal-title').text('Ordner löschen: ' + folderName);
+      modal.find('#folderId').val(folderId);
+  })
 });

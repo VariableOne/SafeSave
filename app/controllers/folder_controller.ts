@@ -48,6 +48,7 @@ export default class FolderController{
             .where('folder_id', folderId)
             .first();
     
+            console.log(folderId);
         if (!folder) {
             return response.status(404).json({ message: 'Folder not found' });
         }

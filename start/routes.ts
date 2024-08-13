@@ -37,5 +37,5 @@ router.get('/files/:id', [FilesController, 'show'])
 router.post('/rename', [FilesController, 'renameFile'])
 
 router.post('/createFolder', [FolderController, 'createFolder'])
-router.post('/deleteFolder/:Id', [FolderController, 'deleteFolder'] )
+router.post('/deleteFolder', [FolderController, 'deleteFolder'] )
 router.get('/folder/:id',  [FolderController, 'getFolder'])
