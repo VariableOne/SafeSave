@@ -1,5 +1,6 @@
 import { HttpContext } from "@adonisjs/core/http";
 import db from "@adonisjs/lucid/services/db";
+import fs from 'fs';
 
 export default class FolderController{
   
@@ -37,6 +38,29 @@ export default class FolderController{
         const subfolders = await db.from('folder').where('parent_folder_id', folderId).andWhere('student_id', session.get('student').student_id).select('*');
 
         return view.render('pages/insideTheFolder', { folderId, files: files || [], subfolders: subfolders || [] });
+    }
+
+    public async renameFolder({request, session, response, view}:HttpContext){
+        
+        const folderId = request.input('folderToRename');
+        const newFolderName = request.input('newFolderName');
+        const studentId = session.get('student').student_id;
+        
+        const folderRecord = await db.from('folder').where('folder_id', folderId).andWhere('student_id', studentId).first();
+        
+        if (!folderRecord) {
+            return response.status(404).send('Folder not found');
+        }
+        
+        await db.from('folder').where('folder_id', folderId).andWhere('student_id', studentId).update({
+            folder_name: newFolderName
+        });
+        
+        const files = await db.from('file').select('*').where('student_id', studentId);
+        const folders = await db.from('folder').select('*').where('student_id', studentId);
+        
+        return view.render('pages/home', { files, folders });
+
     }
 
     public async deleteFolder({ view,response, request, session }: HttpContext) {
