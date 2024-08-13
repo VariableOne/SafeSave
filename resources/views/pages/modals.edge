@@ -49,7 +49,7 @@
          @if(folderId)
             <input type="hidden" id="folderId" name="folderId" value="{{ folderId }}"/>
           @endif
-          <input type="text" name="folderName" id="folderName" placeholder="Geben Sie einen Namen an für Ihren Ordner">
+          <input type="text" name="folderName" id="folderName" placeholder="Geben Sie einen Namen an für Ihren Ordner" required>
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Erstellen</button>
@@ -67,9 +67,6 @@
       <div class="modal-content">
           <div class="modal-header">
               <h5 class="modal-title">Passwort bestätigen</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-              </button>
           </div>
           <form id="deleteForm" action="/delete" method="POST">
               {{ csrfField() }}
