@@ -59,6 +59,7 @@
             <input type="hidden" name="_method" value="DELETE" /> 
             <button type="submit" class="btn btn-secondary btn-sm w-100" data-toggle="modal" data-target="#deleteModalForFolder" data-folder-id="{{ subfolder.folder_id }}">Löschen</button>
             <input type="hidden" id="folderId" name="folderId" value="{{subfolder.folder_id}}"/>
+            <input type="hidden" id="folderName" name="folderName" value="{{subfolder.folder_name}}"/>
             </div>
             <div class="px-1 flex-grow-1">
             {{ csrfField() }} 

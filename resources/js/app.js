@@ -19,12 +19,12 @@
   document.addEventListener("DOMContentLoaded", function() {
     $('#renameFolder').on('show.bs.modal', function (event) {
       var button = $(event.relatedTarget); // Button that triggered the modal
-      var fileId = button.data('folder-id'); // Extract info from data-* attributes
-      var fileName = button.data('folder-name');
+      var folderId = button.data('folder-id'); // Extract info from data-* attributes
+      var folderName = button.data('folder-name');
       
       var modal = $(this);
-      modal.find('.modal-title').text('Ordner umbenennen für ' + fileName);
-      modal.find('#folderToRename').val(fileId);
+      modal.find('.modal-title').text('Ordner umbenennen für ' + folderName);
+      modal.find('#folderToRename').val(folderId);
     });
   });
   document.addEventListener("DOMContentLoaded", function() {
