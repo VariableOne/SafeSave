@@ -1,6 +1,5 @@
 import { HttpContext } from "@adonisjs/core/http";
 import db from "@adonisjs/lucid/services/db";
-import fs from 'fs';
 
 export default class FolderController{
   

@@ -96,11 +96,12 @@ export default class FileController {
         return response.status(404).send('Benutzer nicht gefunden.');
     }
 
-    const authenticated = await hash.verify(result.password, password);
+    const checkPassword = await hash.verify(result.password, password);
 
-    if (!authenticated) {
+    if (!checkPassword) {
         const files = await db.from('file').select('*').where('student_id', student.student_id);
-        return view.render('pages/home', { files, deleteError: 'Datei konnte nicht gelöscht werden! Das Passwort ist falsch.' });
+        const folders = await db.from('folder').select('*').where('student_id', student.student_id);
+        return view.render('pages/home', { files,folders, deleteError: 'Datei konnte nicht gelöscht werden! Das Passwort ist falsch.' });
     }
 
     const file = await db.from('file').where('file_id', fileId).first();
