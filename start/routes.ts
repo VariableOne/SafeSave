@@ -45,6 +45,10 @@ router.get('/resetPassword', async ({ view }) => {
   return view.render('pages/resetPassword')
 })
 
+router.get('/generalRules', async ({ view }) => {
+  return view.render('pages/generalRules')
+})
+
 router.post('/newPassword', [StudentsController, 'checkDataOfStudent'])
 
 router.post('/resetAccomplished', [StudentsController, 'setNewPassword'])
