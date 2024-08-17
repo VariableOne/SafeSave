@@ -35,6 +35,7 @@ router.get('/upload', [FilesController, 'showUploadForm'])
 router.post('/delete',  [FilesController, 'deleteFile'])
 router.get('/files/:id', [FilesController, 'show'])
 router.post('/rename', [FilesController, 'renameFile'])
+router.post('/move-file', [FilesController,'moveFile']);
 
 router.post('/createFolder', [FolderController, 'createFolder'])
 router.post('/deleteFolder', [FolderController, 'deleteFolder'] )
@@ -50,5 +51,4 @@ router.get('/generalRules', async ({ view }) => {
 })
 
 router.post('/newPassword', [StudentsController, 'checkDataOfStudent'])
-
 router.post('/resetAccomplished', [StudentsController, 'setNewPassword'])

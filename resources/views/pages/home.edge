@@ -118,6 +118,13 @@
                   </svg>
                 </button>
               </div>
+              <div class="px-1 flex-grow-1">
+                {{ csrfField() }} 
+                <button class="btn btn-secondary btn-sm w-75" data-toggle="modal" data-target="#moveModal" data-file-id="{{file.file_id}}" data-file-name="{{file.file_name}}">
+                  <input type="hidden" id="{{file.folder_id}}" name="{{file.folder_id}}"/>
+                  In anderen Ordner
+                </button>
+              </div>              
             </div>
           </li>
           @endif

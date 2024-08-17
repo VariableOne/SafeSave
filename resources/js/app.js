@@ -50,3 +50,14 @@ document.addEventListener("DOMContentLoaded", function() {
       modal.find('#folderId').val(folderId);
   })
 });
+document.addEventListener("DOMContentLoaded", function() {
+  $('#moveModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget); // Button that triggered the modal
+    var fileId = button.data('file-id'); // Extract file ID from data-* attributes
+    var fileName = button.data('file-name'); // Extract file name from data-* attributes
+
+    var modal = $(this);
+    modal.find('#file_id').val(fileId); // Set the file ID in the hidden input
+    modal.find('.modal-title').text('Datei verschieben: ' + fileName); // Optionally update the modal title
+  });
+});

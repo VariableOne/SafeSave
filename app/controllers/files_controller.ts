@@ -159,4 +159,29 @@ export default class FileController {
 
         return view.render('pages/home', { files,folders });
 }
+
+public async moveFile({ request, response, session, view }: HttpContext) {
+  const fileId = request.input('file_id');
+  const folderId = request.input('folder_id');
+  const studentId = session.get('student').student_id;
+
+  // Prüfen, ob die Datei existiert
+  const file = await db.from('file').where('file_id', fileId).andWhere('student_id', studentId).first();
+  if (!file) {
+    return response.status(404).send('Datei nicht gefunden');
+  }
+
+  // Datenbank aktualisieren
+  await db.from('file')
+    .where('file_id', fileId).andWhere('student_id', studentId)
+    .update({
+      folder_id: folderId,
+    });
+
+  // Dateien und Ordner erneut abrufen, um die Seite zu aktualisieren
+  const files = await db.from('file').select('*').where('student_id', studentId);
+  const folders = await db.from('folder').select('*').where('student_id', studentId);
+
+  return view.render('pages/home', { files, folders });
+}
 }
