@@ -52,19 +52,22 @@ export default class StudentsController {
     
         const matrikelnummer = request.input('matrikelnummer')
         const email = request.input('email')
-
         const student = await db.from('student').where('email', email).first()
+
+        if(!student){
+            return view.render('pages/resetPassword', {error: 'Email oder Matrikelnummer ist falsch.' });
+        }
+
         const isMatch = await hash.verify(student.matrikelnummer, matrikelnummer)
 
-        if(isMatch){
+        if(!isMatch){
 
+            return view.render('pages/resetPassword', {error: 'Email oder Matrikelnummer ist falsch.' });        
+        }
+    
             return view.render('pages/newPassword', {email});
-        }
-
-        else{
-            return view.render('pages/resetPassword', { error: 'Email oder Matrikelnummer ist falsch.' });
-        }
     }
+
     public async setNewPassword({ request, view }: HttpContext){
 
         const password = request.input('password');
@@ -89,7 +92,7 @@ export default class StudentsController {
 
         })
 
-        return view.render('pages/auth')
+        return view.render('pages/auth', { successMessage: 'Passwort erfolgreich zurückgesetzt!' })
 
     }
 
