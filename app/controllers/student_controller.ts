@@ -12,6 +12,7 @@ export default class StudentsController {
 
         const username = request.input('username');
         const email = request.input('email');
+        const matrikelnummer = request.input('matrikelnummer');
         const password = request.input('password');
         const confirmPassword = request.input('confirmPassword');
 
@@ -34,10 +35,12 @@ export default class StudentsController {
         }
 
         const hashedPassword = await hash.make(password);
+        const hashedMatrikelnummer = await hash.make(matrikelnummer);
 
         const result = await db.table('student').insert({
             username: username,
             email: email,
+            matrikelnummer: hashedMatrikelnummer,
             password: hashedPassword
         });
 
