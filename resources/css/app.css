@@ -10,9 +10,12 @@ body {
   background: linear-gradient(to right, #FF8C00, #000000);
   
 }
+
 /* Hintergrundfarbe der Navbar */
 .navbar {
   background-color: darkorange !important;
+  display: flex;
+  align-items: center; /* Vertikale Ausrichtung */
 }
 
 /* Links in der Navbar weiß färben */
@@ -21,35 +24,30 @@ body {
   color: white !important;
 }
 
-/* Standardmäßig Logo links ausrichten */
-#navbarLogo {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-}
-
-/* Auf mobilen Bildschirmen Logo zentrieren und Toggler ausblenden */
-@media (max-width: 767px) {
-  #navbarLogo {
-    justify-content: center;
-  }
-
-  .navbar-toggler {
-    display: none !important; /* Toggler unsichtbar machen */
-  }
-}
-
 /* Logo Styling */
 #navbarLogo img {
   height: 50px;
   width: 180px;
 }
 
+/* Auf mobilen Bildschirmen Logo zentrieren und Toggler sichtbar machen */
+@media (max-width: 767px) {
+  #navbarLogo {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+  }
+
+  /* Toggler sichtbar machen */
+  .navbar-toggler {
+    display: block !important; /* Toggler sichtbar machen */
+  }
+}
+
 /* Optional: Abstand für den Toggler-Button auf großen Bildschirmen */
 .navbar-toggler {
   margin-left: auto; /* Toggler-Button auf der rechten Seite */
 }
-
 
 /* Stil für das modale Fenster */
 .modal-dialog {

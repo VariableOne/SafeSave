@@ -1,20 +1,27 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <!-- Logo mit ID für spezifisches Styling -->
-    <a class="navbar-brand" href="https://www.youtube.com/watch?v=xMHJGd3wwZk" target="_blank" id="navbarLogo">
-      <img src="/files/SafeSave.png" alt="SafeSave Logo" height="50" width="180">
-    </a>
-    <!-- Der Toggler-Button wird ausgeblendet auf mobilen Bildschirmen -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <!-- Link zur Seite 'generalrules' -->
-        <li class="nav-item">
-          <a class="nav-link" href="/generalRules">Allgemein</a>
-        </li>
-      </ul>
+    <!-- Container für Flexbox-Ausrichtung -->
+    <div class="container-fluid">
+      <!-- Logo mit ID für spezifisches Styling -->
+      <a class="navbar-brand" href="https://www.youtube.com/watch?v=xMHJGd3wwZk" target="_blank" id="navbarLogo">
+        <img src="/files/SafeSave.png" alt="SafeSave Logo">
+      </a>
+      <!-- Der Toggler-Button wird auf mobilen Bildschirmen angezeigt -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <!-- Link zur Seite 'home' -->
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/home">Home</a>
+          </li>
+          <!-- Link zur Seite 'generalRules' -->
+          <li class="nav-item">
+            <a class="nav-link" href="/generalRules">Allgemein</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </nav>
 </header>
