@@ -119,6 +119,13 @@
                   </svg>
                 </button>
               </div>
+                 <!--In anderen Ordner verschieben-->
+                 <div class="px-1 flex-grow-1">
+                  {{ csrfField() }} 
+                  <button class="btn btn-secondary btn-sm w-75" data-toggle="modal" data-target="#moveModal" data-file-id="{{file.file_id}}" data-file-name="{{file.file_name}}">
+                    In Unterordner
+                  </button>
+                </div>    
             </div>
         </li>
         @endeach
