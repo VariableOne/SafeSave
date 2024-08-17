@@ -40,3 +40,11 @@ router.post('/createFolder', [FolderController, 'createFolder'])
 router.post('/deleteFolder', [FolderController, 'deleteFolder'] )
 router.get('/folder/:id',  [FolderController, 'getFolder'])
 router.post('renameFolder', [FolderController, 'renameFolder'] )
+
+router.get('/resetPassword', async ({ view }) => {
+  return view.render('pages/resetPassword')
+})
+
+router.post('/newPassword', [StudentsController, 'checkDataOfStudent'])
+
+router.post('/resetAccomplished', [StudentsController, 'setNewPassword'])

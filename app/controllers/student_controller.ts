@@ -48,6 +48,51 @@ export default class StudentsController {
 
     }
 
+    public async checkDataOfStudent({ view, request }: HttpContext){
+    
+        const matrikelnummer = request.input('matrikelnummer')
+        const email = request.input('email')
+
+        const student = await db.from('student').where('email', email).first()
+        const isMatch = await hash.verify(student.matrikelnummer, matrikelnummer)
+
+        if(isMatch){
+
+            return view.render('pages/newPassword', {email});
+        }
+
+        else{
+            return view.render('pages/resetPassword', { error: 'Email oder Matrikelnummer ist falsch.' });
+        }
+    }
+    public async setNewPassword({ request, view }: HttpContext){
+
+        const password = request.input('password');
+        const confirmPassword = request.input('confirmPassword');
+        const email = request.input('email')
+
+        if (password !== confirmPassword) {
+            console.log("Passwords do not match");
+            return view.render('pages/newPassword', { passwordError: 'Passwort und Bestätigungspasswort stimmen nicht überein!' });
+        }
+
+        const uppercaseChars = password.match(/[A-Z]/g);
+        const digitChars = password.match(/[0-9]/g);
+        if (password.length < 8 || !uppercaseChars || uppercaseChars.length < 2 || !digitChars || digitChars.length < 2) {
+            console.log("Password criteria not met");
+            return view.render('pages/newPassword', { passwordError: 'Das Passwort muss mindestens 8 Zeichen lang sein und mindestens 2 Großbuchstaben sowie 2 Zahlen enthalten!' });
+        }
+        const hashedPassword = await hash.make(password);
+        await db.from('student').where('email', email).update({
+
+            password: hashedPassword
+
+        })
+
+        return view.render('pages/auth')
+
+    }
+
     public async loginProcess({ view, request, session }: HttpContext) {
 
         const email = request.input('email');
