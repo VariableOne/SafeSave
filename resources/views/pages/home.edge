@@ -105,11 +105,10 @@
                     </svg>
                   </button>
               </div>
+              <!--Email-->
               <div class="px-1 flex-grow-1">
                 <a href="mailto:{{session.get('student').email}}=Bitte%20Datei%20anhängen&body=Sehr%20geehrte%20Damen%20und%20Herren,%0D%0A%0D%0A(bitte%20hängen%20Sie%20hier%20die%20Datei%20manuell%20an).%0D%0A%0D%0AMit%20freundlichen%20Grüßen%0D%0A{{session.get('student').username}}" class="btn btn-info btn-sm w-75">Senden</a>
-            </div>
-            
-            
+              </div>
               <div class="px-1 flex-grow-1">
                 <!-- Container für den "Umbennen"-Button -->
                 {{ csrfField() }} 
