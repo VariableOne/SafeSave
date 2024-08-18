@@ -5,9 +5,9 @@ import hash from "@adonisjs/core/services/hash";
 import db from "@adonisjs/lucid/services/db";
 
 export default class StudentsController {
-    static registerProcess: any;
+  //  static registerProcess: any;
 
- 
+    //Registrierung neuer Benutzer
     public async registerProcess({ request, view }: HttpContext) {
 
         const username = request.input('username');
@@ -48,6 +48,7 @@ export default class StudentsController {
 
     }
 
+    //Funktion wenn man Passwort ändern will: Zuerst werden Matrikelnummer und Email überprüft
     public async checkDataOfStudent({ view, request }: HttpContext){
     
         const matrikelnummer = request.input('matrikelnummer')
@@ -68,6 +69,7 @@ export default class StudentsController {
             return view.render('pages/newPassword', {email});
     }
 
+    //Funktion, um dann neues Passwort anzulegen nach checkDataOfStudent
     public async setNewPassword({ request, view }: HttpContext){
 
         const password = request.input('password');
@@ -96,6 +98,7 @@ export default class StudentsController {
 
     }
 
+    //Anmeldung eines Benutzers
     public async loginProcess({ view, request, session }: HttpContext) {
 
         const email = request.input('email');
@@ -130,12 +133,14 @@ export default class StudentsController {
         }
     }
 
+    //Abmeldung eines Benutzers
     public async logout({ session, view }: HttpContext) {
 
         session.forget('student');
         return view.render('pages/auth');
     }
 
+    //rendern der Anmeldeseite
     public async loginForm({ view }: HttpContext) {
 
         return view.render('pages/auth');

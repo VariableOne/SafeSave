@@ -25,10 +25,21 @@ router.post('/auth', async ({ view }) => {
 })
 
 router.get('/logout', [StudentsController, 'logout'])
+router.get('/resetPassword', async ({ view }) => {
+  return view.render('pages/resetPassword')
+})
+router.post('/newPassword', [StudentsController, 'checkDataOfStudent'])
+router.post('/resetAccomplished', [StudentsController, 'setNewPassword'])
+
+router.get('/generalRules', async ({ view }) => {
+  return view.render('pages/generalRules')
+})
+
 
 router.post('/home', [StudentsController, 'loginProcess'])
 router.get('/home', [StudentsController, 'loginForm'])
 
+//Alle Routen bzgl. den Dateien
 router.post('/upload', [FilesController, 'upload'])
 router.post('/folder/:id',  [FilesController, 'upload'])
 router.get('/upload', [FilesController, 'showUploadForm'])
@@ -37,18 +48,9 @@ router.get('/files/:id', [FilesController, 'show'])
 router.post('/rename', [FilesController, 'renameFile'])
 router.post('/move-file', [FilesController,'moveFile']);
 
+
+//Alle Routen bzgl. den Ordnern
 router.post('/createFolder', [FolderController, 'createFolder'])
 router.post('/deleteFolder', [FolderController, 'deleteFolder'] )
 router.get('/folder/:id',  [FolderController, 'getFolder'])
 router.post('renameFolder', [FolderController, 'renameFolder'] )
-
-router.get('/resetPassword', async ({ view }) => {
-  return view.render('pages/resetPassword')
-})
-
-router.get('/generalRules', async ({ view }) => {
-  return view.render('pages/generalRules')
-})
-
-router.post('/newPassword', [StudentsController, 'checkDataOfStudent'])
-router.post('/resetAccomplished', [StudentsController, 'setNewPassword'])

@@ -14,6 +14,7 @@ export default class FileController {
     return view.render('/upload', { files });
   }
 
+  //Funktion, um Dateien hochzuladen
   public async upload({ request, response, params, view }: HttpContext) {
 
     const file = request.file('fieldName', {
@@ -42,6 +43,7 @@ export default class FileController {
         return response.unauthorized('Student not authenticated')
       }
 
+      //Falls die Datei in einem Ordner ist oder nicht
       const folderIdToInsert = folderId ? folderId : null;
 
       await db.table('file').insert({
@@ -69,6 +71,7 @@ export default class FileController {
     return view.render('pages/home', { files, folders });
   }
 
+  //Anzeigen und Öffnen der Dateien
   public async show({ params, response }: HttpContext) {
     console.log(params.id);
     
@@ -84,6 +87,7 @@ export default class FileController {
     return response.stream(fs.createReadStream(filePath))
   }
 
+  //Löschen der Dateien
   public async deleteFile({ request, session, response, view }: HttpContext) {
     const password = request.input('password');
     const fileId = request.input('fileToDelete');
@@ -106,7 +110,7 @@ export default class FileController {
 
     const file = await db.from('file').where('file_id', fileId).first();
     if (file) {
-        // Dynamisch den vollständigen Pfad zur Datei erzeugen
+        // Vollständigen Pfad zur Datei erzeugen
         const filePath = join('C:\\Users\\uemmu\\SafeSave\\public', 'uploads', file.file_name);
         console.log('Versuche, Datei zu löschen:', filePath);
 
@@ -122,17 +126,17 @@ export default class FileController {
         await db.from('file').where('file_id', fileId).delete();
     }
 
+  // Dateien und Ordner erneut abrufen, um die Seite zu aktualisieren
     const files = await db.from('file').select('*').where('student_id', student.student_id);
     const folders = await db.from('folder').select('*').where('student_id', student.student_id);
     return view.render('pages/home', { files, folders });
 }
 
+  //Datei umbenennen
   public async renameFile({ response, session, request, view }: HttpContext) {
     const fileId = request.input('fileToRename');
     const newFileName = request.input('newFileName');
     const studentId = session.get('student').student_id;
-
-    // Find the existing file record
     const fileRecord = await db.from('file').where('file_id', fileId).andWhere('student_id', studentId).first();
 
     if (!fileRecord) {
@@ -143,23 +147,23 @@ export default class FileController {
     const fileExtension = path.extname(fileRecord.file_name);
     const newFilePath = path.join(app.publicPath(), 'uploads', `${newFileName}${fileExtension}`);
 
-    // Rename the file in the filesystem
+    // Umbenunnung erfolgt hier
     await fs.promises.rename(oldFilePath, newFilePath);
 
-    // Update the database record
+    // In Datenbank aktualisieren
     await db.from('file')
         .where('file_id', fileId).andWhere('student_id', studentId)
         .update({
             file_name: `${newFileName}${fileExtension}`,
             file_path: `uploads/${newFileName}${fileExtension}`
         });
-
         const files = await db.from('file').select('*').where('student_id', studentId);
         const folders = await db.from('folder').select('*').where('student_id', studentId);
 
         return view.render('pages/home', { files,folders });
 }
 
+//Verschiebung einer Datei in einen Unterordner
 public async moveFile({ request, response, session, view }: HttpContext) {
   const fileId = request.input('file_id');
   const folderId = request.input('folder_id');
@@ -178,7 +182,6 @@ public async moveFile({ request, response, session, view }: HttpContext) {
       folder_id: folderId,
     });
 
-  // Dateien und Ordner erneut abrufen, um die Seite zu aktualisieren
   const files = await db.from('file').select('*').where('student_id', studentId);
   const folders = await db.from('folder').select('*').where('student_id', studentId);
 

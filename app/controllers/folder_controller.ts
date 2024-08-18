@@ -3,6 +3,7 @@ import db from "@adonisjs/lucid/services/db";
 
 export default class FolderController{
   
+    //Ordner anlegen
     public async createFolder({ request, view, session }: HttpContext) {
 
         const folderName = request.input("folderName");
@@ -23,10 +24,10 @@ export default class FolderController{
         // Alle Dateien des Studenten abrufen
         const files = await db.from('file').select('*').where('student_id', student.student_id);
 
-        // View rendern und sicherstellen, dass `folders` und `files` immer Arrays sind
         return view.render('pages/home', {parentFolderId, folders: folders || [], files: files || [] });
         }
 
+    //Ordner öffnen
     public async getFolder({ view, request, session }: HttpContext){
 
         const folderId = request.input('folderId')
@@ -39,6 +40,7 @@ export default class FolderController{
         return view.render('pages/insideTheFolder', { folderId, files: files || [], subfolders: subfolders || [] });
     }
 
+     //Ordner umbenennen
     public async renameFolder({request, session, response, view}:HttpContext){
         
         const folderId = request.input('folderToRename');
@@ -62,6 +64,7 @@ export default class FolderController{
 
     }
 
+     //Ordner löschen
     public async deleteFolder({ view,response, request, session }: HttpContext) {
         const folderId = request.input('folderId');
     
@@ -85,6 +88,7 @@ export default class FolderController{
         return view.render('pages/home', {folders: folders || [], files: files || [] });
     }
     
+    //Funktion, die dann auch die Unterordner iterativ löscht
     private async deleteFolderAndContents(folderId: number) {
         // Rekursive Abfrage, um alle Unterordner zu finden
         const result = await db.rawQuery(`
