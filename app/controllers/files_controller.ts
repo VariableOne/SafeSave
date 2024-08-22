@@ -15,19 +15,24 @@ export default class FileController {
   }
 
   //Funktion, um Dateien hochzuladen
-  public async upload({ request, response, params, view }: HttpContext) {
+  public async upload({ request, response, params, view, session }: HttpContext) {
 
+    const studentId = session.get('student').student_id;
     const file = request.file('fieldName', {
         size: '500mb',
         extnames: ['jpg', 'png', 'gif', 'pdf', 'txt', 'docx', 'mp3', 'wav', 'flac', 'webm', 'zip']
       })
 
       if(!file){
-        return response.badRequest('No file uploaded')
+        const files = await db.from('file').select('*').where('student_id', studentId);
+        const folders = await db.from('folder').select('*').where('student_id', studentId);
+        return view.render('pages/home', { files,folders, uploadError: 'Datei konnte nicht hochgeladen werden. Sieh unter "Allgemein",welche Dateiformate erlaubt sind!' });
       }
 
       if (!file.isValid) {
-        return response.badRequest('No file uploaded')
+        const files = await db.from('file').select('*').where('student_id', studentId);
+        const folders = await db.from('folder').select('*').where('student_id', studentId);
+        return view.render('pages/home', { files,folders, uploadError: 'Datei konnte nicht hochgeladen werden. Sieh unter "Allgemein", welche Dateiformate erlaubt sind!' });
       }
 
       await file.move(app.publicPath('uploads'),
