@@ -21,8 +21,7 @@ router.get('/registration', async ({ view, request }) => {
   return view.render('pages/registration',{currentPath})
 })
 
-router.post('/auth', async ({ view, request }) => {
-  //const currentPath = request.url();
+router.post('/auth', async ({ view }) => {
   return view.render('pages/auth')
 })
 
