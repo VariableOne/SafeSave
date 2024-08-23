@@ -142,8 +142,8 @@ export default class StudentsController {
 
     //rendern der Anmeldeseite
     public async loginForm({ view,request }: HttpContext) {
-        const currentPath = request.url();
-        return view.render('pages/auth', {currentPath});
+       // const currentPath = request.url();
+        return view.render('pages/auth');
     }
 
 

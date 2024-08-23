@@ -22,8 +22,8 @@ router.get('/registration', async ({ view, request }) => {
 })
 
 router.post('/auth', async ({ view, request }) => {
-  const currentPath = request.url();
-  return view.render('pages/auth',{currentPath})
+  //const currentPath = request.url();
+  return view.render('pages/auth')
 })
 
 router.get('/logout', [StudentsController, 'logout'])
