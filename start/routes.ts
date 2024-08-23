@@ -48,7 +48,6 @@ router.get('/upload', [FilesController, 'showUploadForm'])
 router.post('/delete',  [FilesController, 'deleteFile'])
 router.get('/files/:id', [FilesController, 'show'])
 router.post('/rename', [FilesController, 'renameFile'])
-router.post('/move-file', [FilesController,'moveFile']);
 
 
 //Alle Routen bzgl. den Ordnern
