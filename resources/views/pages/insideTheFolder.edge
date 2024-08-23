@@ -15,19 +15,9 @@
 </head>
 <body>
 @include('pages/header')
-@include('pages/logout')
 @include('pages/modals')
-  
-  <!-- Zurück-Button -->
-  <div style="display: flex; justify-content: flex-end; margin-bottom: 10px;">
-    <a href="javascript:history.back()" class="btn btn-secondary" style="border-radius: 5px; ">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left me-2" viewBox="0 0 16 16">
-        <path d="M11.293 14.293a1 1 0 0 0 0-1.414L6.414 8l4.879-4.879a1 1 0 1 0-1.414-1.414L5 7.586a1 1 0 0 0 0 1.414l4.879 4.879a1 1 0 0 0 1.414 0z"/>
-      </svg>
-      Zurück
-    </a>
-  </div>
 @include('pages/errorMessages')
+
 <div class="container">
     <div class="scrollable-container">
       <div class="text-center">

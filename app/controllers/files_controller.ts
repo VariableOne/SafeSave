@@ -72,8 +72,8 @@ export default class FileController {
 
   const files = await query;
   const folders = await db.from('folder').select('*').where('student_id', student.student_id);
-
-    return view.render('pages/home', { files, folders });
+  const currentPath = request.url();
+    return view.render('pages/home', { currentPath,files, folders });
   }
 
   //Anzeigen und Öffnen der Dateien
@@ -134,7 +134,10 @@ export default class FileController {
   // Dateien und Ordner erneut abrufen, um die Seite zu aktualisieren
     const files = await db.from('file').select('*').where('student_id', student.student_id);
     const folders = await db.from('folder').select('*').where('student_id', student.student_id);
-    return view.render('pages/home', { files, folders });
+
+    const currentPath = request.url();
+
+    return view.render('pages/home', { currentPath,files, folders });
 }
 
   //Datei umbenennen
@@ -164,8 +167,9 @@ export default class FileController {
         });
         const files = await db.from('file').select('*').where('student_id', studentId);
         const folders = await db.from('folder').select('*').where('student_id', studentId);
+        const currentPath = request.url();
 
-        return view.render('pages/home', { files,folders });
+        return view.render('pages/home', { currentPath,files,folders });
 }
 
 //Verschiebung einer Datei in einen Unterordner
@@ -189,7 +193,8 @@ public async moveFile({ request, response, session, view }: HttpContext) {
 
   const files = await db.from('file').select('*').where('student_id', studentId);
   const folders = await db.from('folder').select('*').where('student_id', studentId);
+  const currentPath = request.url();
 
-  return view.render('pages/home', { files, folders });
+  return view.render('pages/home', { currentPath,files, folders });
 }
 }

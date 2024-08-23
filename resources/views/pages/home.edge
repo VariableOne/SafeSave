@@ -11,14 +11,12 @@
 </head>
 <body>
 @include('pages/header')
-@include('pages/logout')
 @include('pages/modals')
 
 <div class="col">
   <div style="margin-top: 20px; margin-left: 20px;">
     <h3 style="color: white;">Wilkommen! Hier sind deine Dateien {{session.get('student').username}}</h3>
   </div>
-</div>
 </div>
 @include('pages/errorMessages')
 <div class="container">

@@ -43,8 +43,8 @@ export default class StudentsController {
             matrikelnummer: hashedMatrikelnummer,
             password: hashedPassword
         });
-
-        return view.render('pages/auth', { result });
+        const currentPath = request.url();
+        return view.render('pages/auth', { result, currentPath });
 
     }
 
@@ -65,8 +65,8 @@ export default class StudentsController {
 
             return view.render('pages/resetPassword', {error: 'Email oder Matrikelnummer ist falsch.' });        
         }
-    
-            return view.render('pages/newPassword', {email});
+            const currentPath = request.url();
+            return view.render('pages/newPassword', {email, currentPath});
     }
 
     //Funktion, um dann neues Passwort anzulegen nach checkDataOfStudent
@@ -93,8 +93,8 @@ export default class StudentsController {
             password: hashedPassword
 
         })
-
-        return view.render('pages/auth', { successMessage: 'Passwort erfolgreich zurückgesetzt!' })
+        const currentPath = request.url();
+        return view.render('pages/auth', {currentPath, successMessage: 'Passwort erfolgreich zurückgesetzt!' })
 
     }
 
@@ -125,25 +125,26 @@ export default class StudentsController {
             };
 
             session.put('student', student);
-
+            const currentPath = request.url();
             const files = await db.from('file').select('*').where('student_id', student.student_id);
             const folders = await db.from('folder').select('*').where('student_id', student.student_id);
 
-            return view.render('pages/home', { student, files, folders });
+            return view.render('pages/home', { student, files, folders, currentPath});
         }
     }
 
     //Abmeldung eines Benutzers
-    public async logout({ session, view }: HttpContext) {
-
+    public async logout({ session, view, request }: HttpContext) {
+        const currentPath = request.url();
         session.forget('student');
-        return view.render('pages/auth');
+        return view.render('pages/auth', {currentPath});
     }
 
     //rendern der Anmeldeseite
-    public async loginForm({ view }: HttpContext) {
-
-        return view.render('pages/auth');
+    public async loginForm({ view,request }: HttpContext) {
+        const currentPath = request.url();
+        return view.render('pages/auth', {currentPath});
     }
+
 
 }

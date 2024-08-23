@@ -16,25 +16,28 @@ import router from '@adonisjs/core/services/router'
 router.on('/').render('pages/auth')
 
 router.post('/registration', [StudentsController, 'registerProcess']);
-router.get('/registration', async ({ view }) => {
-  return view.render('pages/registration')
+router.get('/registration', async ({ view, request }) => {
+  const currentPath = request.url();
+  return view.render('pages/registration',{currentPath})
 })
 
-router.post('/auth', async ({ view }) => {
-  return view.render('pages/auth')
+router.post('/auth', async ({ view, request }) => {
+  const currentPath = request.url();
+  return view.render('pages/auth',{currentPath})
 })
 
 router.get('/logout', [StudentsController, 'logout'])
-router.get('/resetPassword', async ({ view }) => {
-  return view.render('pages/resetPassword')
+router.get('/resetPassword', async ({ view,request }) => {
+  const currentPath = request.url();
+  return view.render('pages/resetPassword',{currentPath})
 })
 router.post('/newPassword', [StudentsController, 'checkDataOfStudent'])
 router.post('/resetAccomplished', [StudentsController, 'setNewPassword'])
 
-router.get('/generalRules', async ({ view }) => {
-  return view.render('pages/generalRules')
+router.get('/generalRules', async ({ view, request }) => {
+  const currentPath = request.url();
+  return view.render('pages/generalRules', {currentPath})
 })
-
 
 router.post('/home', [StudentsController, 'loginProcess'])
 router.get('/home', [StudentsController, 'loginForm'])

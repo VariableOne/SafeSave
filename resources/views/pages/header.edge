@@ -10,17 +10,27 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <!-- Link zur Seite 'home' -->
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/home">Home</a>
-          </li>
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">   
+          @if(currentPath !=='/auth' && currentPath !== '/logout')  
           <!-- Link zur Seite der Uploadregeln -->
           <li class="nav-item">
             <a class="nav-link" href="/generalRules">Allgemein</a>
           </li>
+          <form action="/home" method="POST">
+            {{csrfField()}}
+          <li class="nav-item">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </form>   
+        @endif 
+        @if(currentPath !=='/auth' && currentPath !== '/logout' && currentPath !== '/home')
+        <a class="nav-link" href="javascript:history.back()">
+          Zurück
+        </a>
+        @endif
         </ul>
       </div>
     </div>
   </nav>
 </header>
+
