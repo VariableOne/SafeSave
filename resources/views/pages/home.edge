@@ -24,7 +24,7 @@
     <div class="text-center">
       <h4 style="color: grey;">Dein Dateisystem</h4>
   
-      @if(folders.length === 0 || files.length < 0)
+      @if(folders.length === 0 && files.length === 0)
       <p>Noch keine Dateien oder Ordner hochgeladen</p>
       @endif
 
