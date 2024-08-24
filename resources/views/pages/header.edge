@@ -26,9 +26,7 @@
         </form>   
         @endif 
         @if (currentPath && currentPath !== '/auth' && currentPath !== '/logout' && currentPath !== '/home' && currentPath !== '/createFolder' && currentPath !== '/deleteFolder' && currentPath !== '/upload' && currentPath !== '/rename' && currentPath !== '/delete')
-        <a class="nav-link" href="javascript:history.back()">
-          Zurück
-        </a>
+        <a href="#" class="nav-link" onclick="window.history.back();">Zurück</a>
         @endif
         </ul>
       </div>

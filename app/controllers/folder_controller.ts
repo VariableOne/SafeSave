@@ -47,19 +47,14 @@ export default class FolderController{
         const folderId = request.input('folderToRename');
         const newFolderName = request.input('newFolderName');
         const studentId = session.get('student').student_id;
-        const files = await db.from('file').select('*').where('student_id', studentId);
-        const folders = await db.from('folder').select('*').where('student_id', studentId);
 
-        const folderRecord = await db.from('folder').where('folder_id', folderId).andWhere('student_id', studentId).first();
-        
-        if (!folderRecord) {
-            return view.render('pages/home', { currentPath,files,folders, error: 'Ordner konnte nicht gefunden werden.' });
-        }
-        
         await db.from('folder').where('folder_id', folderId).andWhere('student_id', studentId).update({
             folder_name: newFolderName
         });
-        
+
+        const files = await db.from('file').select('*').where('student_id', studentId);
+        const folders = await db.from('folder').select('*').where('student_id', studentId);
+
         return view.render('pages/home', { currentPath,files, folders });
 
     }
