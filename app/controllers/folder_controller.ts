@@ -1,4 +1,5 @@
 import { HttpContext } from "@adonisjs/core/http";
+import hash from "@adonisjs/core/services/hash";
 import db from "@adonisjs/lucid/services/db";
 
 export default class FolderController{
@@ -41,34 +42,42 @@ export default class FolderController{
     }
 
      //Ordner umbenennen
-    public async renameFolder({request, session, response, view}:HttpContext){
-        
+    public async renameFolder({request, session, view}:HttpContext){
+        const currentPath = request.url();
         const folderId = request.input('folderToRename');
         const newFolderName = request.input('newFolderName');
         const studentId = session.get('student').student_id;
+        const files = await db.from('file').select('*').where('student_id', studentId);
+        const folders = await db.from('folder').select('*').where('student_id', studentId);
 
         const folderRecord = await db.from('folder').where('folder_id', folderId).andWhere('student_id', studentId).first();
         
         if (!folderRecord) {
-            return response.status(404).send('Folder not found');
+            return view.render('pages/home', { currentPath,files,folders, error: 'Ordner konnte nicht gefunden werden.' });
         }
         
         await db.from('folder').where('folder_id', folderId).andWhere('student_id', studentId).update({
             folder_name: newFolderName
         });
         
-        const files = await db.from('file').select('*').where('student_id', studentId);
-        const folders = await db.from('folder').select('*').where('student_id', studentId);
-        const currentPath = request.url();
-
         return view.render('pages/home', { currentPath,files, folders });
 
     }
 
      //Ordner löschen
     public async deleteFolder({ view,response, request, session }: HttpContext) {
+        const currentPath = request.url();
         const folderId = request.input('folderId');
-    
+        const password = request.input('password');
+        const student = session.get('student');
+        const result = await db.from('student').select('*').where('student_id', student.student_id).first();
+        const checkPassword = await hash.verify(result.password, password);
+
+    if (!checkPassword) {
+        const files = await db.from('file').select('*').where('student_id', student.student_id);
+        const folders = await db.from('folder').select('*').where('student_id', student.student_id);
+        return view.render('pages/home', { currentPath,files,folders, error: 'Ordner konnte nicht gelöscht werden! Das Passwort ist falsch.' });
+    }
         // Zuerst den Ordner aus der Datenbank abrufen
         const folder = await db
             .from('folder')
@@ -122,7 +131,6 @@ export default class FolderController{
           const files = await db.from('file').select('*').where('student_id', session.get('student').student_id);
         // Prüfen, ob der Ordner eine parent_folder_id hat
         //await this.deleteFolderAndContents(folderId, studentId);
-        const currentPath = request.url();
         return view.render('pages/home', {currentPath, folders, files});
     }
     

@@ -15,8 +15,9 @@ export default class FileController {
   }
 
   //Funktion, um Dateien hochzuladen
-  public async upload({ request, response, params, view, session }: HttpContext) {
+  public async upload({ request, params, view, session }: HttpContext) {
 
+    const currentPath = request.url();
     const studentId = session.get('student').student_id;
     const file = request.file('fieldName', {
         size: '500mb',
@@ -26,13 +27,13 @@ export default class FileController {
       if(!file){
         const files = await db.from('file').select('*').where('student_id', studentId);
         const folders = await db.from('folder').select('*').where('student_id', studentId);
-        return view.render('pages/home', { files,folders, uploadError: 'Datei konnte nicht hochgeladen werden. Sieh unter "Allgemein",welche Dateiformate erlaubt sind!' });
+        return view.render('pages/home', { currentPath,files,folders, error: 'Datei konnte nicht hochgeladen werden. Sieh unter "Allgemein",welche Dateiformate erlaubt sind!' });
       }
 
       if (!file.isValid) {
         const files = await db.from('file').select('*').where('student_id', studentId);
         const folders = await db.from('folder').select('*').where('student_id', studentId);
-        return view.render('pages/home', { files,folders, uploadError: 'Datei konnte nicht hochgeladen werden. Sieh unter "Allgemein", welche Dateiformate erlaubt sind!' });
+        return view.render('pages/home', { currentPath,files,folders, error: 'Datei konnte nicht hochgeladen werden. Sieh unter "Allgemein", welche Dateiformate erlaubt sind!' });
       }
 
       await file.move(app.publicPath('uploads'),
@@ -45,7 +46,7 @@ export default class FileController {
       const student = await db.from('student').where('username', studentName).first();
 
       if (!student) {
-        return response.unauthorized('Student not authenticated')
+        return view.render('pages/auth', { currentPath, error: 'Student nicht authentifiziert' });
       }
 
       //Falls die Datei in einem Ordner ist oder nicht
@@ -72,8 +73,8 @@ export default class FileController {
 
   const files = await query;
   const folders = await db.from('folder').select('*').where('student_id', student.student_id);
-  const currentPath = request.url();
-    return view.render('pages/home', { currentPath,files, folders });
+
+  return view.render('pages/home', { currentPath,files, folders });
   }
 
   //Anzeigen und Öffnen der Dateien
@@ -93,37 +94,36 @@ export default class FileController {
   }
 
   //Löschen der Dateien
-  public async deleteFile({ request, session, response, view }: HttpContext) {
+  public async deleteFile({ request, session, view }: HttpContext) {
     const password = request.input('password');
     const fileId = request.input('fileToDelete');
     const student = session.get('student');
 
     // Benutzer verifizieren
     const result = await db.from('student').select('*').where('student_id', student.student_id).first();
-
+    const currentPath = request.url();
     if (!result) {
-        return response.status(404).send('Benutzer nicht gefunden.');
+      return view.render('pages/auth', { currentPath,error: 'Benutzer wurde nicht gefunden.' });
     }
 
     const checkPassword = await hash.verify(result.password, password);
-
     if (!checkPassword) {
         const files = await db.from('file').select('*').where('student_id', student.student_id);
         const folders = await db.from('folder').select('*').where('student_id', student.student_id);
-        return view.render('pages/home', { files,folders, deleteError: 'Datei konnte nicht gelöscht werden! Das Passwort ist falsch.' });
+        return view.render('pages/home', { currentPath,files,folders, error: 'Datei konnte nicht gelöscht werden! Das Passwort ist falsch.' });
     }
 
     const file = await db.from('file').where('file_id', fileId).first();
     if (file) {
         // Vollständigen Pfad zur Datei erzeugen
-        const filePath = join('C:\\Users\\uemmu\\SafeSave\\public', 'uploads', file.file_name);
+        const filePath = join('C:\\SafeSave\\public', 'uploads', file.file_name);
         console.log('Versuche, Datei zu löschen:', filePath);
 
         fs.unlink(filePath, (err) => {
             if (err) {
-                console.error('Fehler beim Löschen der Datei:', err);
+              return view.render('pages/home', {currentPath, files,folders, error: 'Datei konnte nicht gelöscht werden! Das Passwort ist falsch.' });
             } else {
-                console.log('Datei erfolgreich gelöscht:', filePath);
+              return view.render('pages/home', { currentPath,files,folders, error: 'Datei konnte nicht gelöscht werden! Das Passwort ist falsch.' });
             }
         });
 
@@ -135,20 +135,18 @@ export default class FileController {
     const files = await db.from('file').select('*').where('student_id', student.student_id);
     const folders = await db.from('folder').select('*').where('student_id', student.student_id);
 
-    const currentPath = request.url();
-
     return view.render('pages/home', { currentPath,files, folders });
 }
 
   //Datei umbenennen
-  public async renameFile({ response, session, request, view }: HttpContext) {
+  public async renameFile({ session, request, view }: HttpContext) {
     const fileId = request.input('fileToRename');
     const newFileName = request.input('newFileName');
     const studentId = session.get('student').student_id;
     const fileRecord = await db.from('file').where('file_id', fileId).andWhere('student_id', studentId).first();
-
+    const currentPath = request.url();
     if (!fileRecord) {
-        return response.status(404).send('File not found');
+      return view.render('pages/home', { currentPath, error: 'Datei konnte nicht gelöscht werden! Das Passwort ist falsch.' });
     }
 
     const oldFilePath = path.join(app.publicPath(), fileRecord.file_path);
@@ -167,7 +165,6 @@ export default class FileController {
         });
         const files = await db.from('file').select('*').where('student_id', studentId);
         const folders = await db.from('folder').select('*').where('student_id', studentId);
-        const currentPath = request.url();
 
         return view.render('pages/home', { currentPath,files,folders });
 }

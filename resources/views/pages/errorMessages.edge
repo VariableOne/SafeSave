@@ -9,51 +9,6 @@
 </div>
 @endif
 
-@if(loginError)
-<div class="alert alert-danger d-flex align-items-center" role="alert" id="warning" style="visibility: visible;">
-    {{loginError}}
-    <button type="button" class="btn-close" aria-label="Close"
-        onclick="document.getElementById('warning').style.visibility = 'hidden';"
-        id="close_btn"></button>
-</div>
-@endif
-
-@if(uploadError)
-<div class="alert alert-danger d-flex align-items-center" role="alert" id="warning" style="visibility: visible;">
-    {{uploadError}}
-    <button type="button" class="btn-close" aria-label="Close"
-        onclick="document.getElementById('warning').style.visibility = 'hidden';"
-        id="close_btn"></button>
-</div>
-@endif
-
-    @if(deleteError)
-    <div class="alert alert-danger d-flex align-items-center" role="alert" id="warning" style="visibility: visible;">
-      {{deleteError}}
-      <button type="button" class="btn-close" aria-label="Close"
-          onclick="document.getElementById('warning').style.visibility = 'hidden';"
-          id="close_btn"></button>
-    </div>
-    @endif
-
-@if(passwordError)
-<div class="alert alert-danger d-flex align-items-center" role="alert" id="warning" style="visibility: visible;">
-    {{passwordError}}
-    <button type="button" class="btn-close" aria-label="Close"
-        onclick="document.getElementById('warning').style.visibility = 'hidden';"
-        id="close_btn"></button>
-</div>
-@endif
-
-@if(registrationError)
-<div class="alert alert-danger d-flex align-items-center" role="alert" id="warning" style="visibility: visible;">
-    {{registrationError}}
-    <button type="button" class="btn-close" aria-label="Close"
-        onclick="document.getElementById('warning').style.visibility = 'hidden';"
-        id="close_btn"></button>
-</div>
-@endif
-
 @if(error)
 <div class="alert alert-danger d-flex align-items-center" role="alert" id="warning" style="visibility: visible;">
     {{error}}
