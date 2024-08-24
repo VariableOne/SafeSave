@@ -16,6 +16,10 @@ export default class StudentsController {
         const password = request.input('password');
         const confirmPassword = request.input('confirmPassword');
 
+        if (!/^\d+$/.test(matrikelnummer)) {
+            return view.render('pages/registration', { currentPath,error: 'Matrikeknummer dürfen nur Zahlen beinhalten.' });
+        }
+
         if (password !== confirmPassword) {
             console.log("Passwords do not match");
             return view.render('pages/registration', { currentPath,error: 'Passwort und Bestätigungspasswort stimmen nicht überein!' });
