@@ -29,8 +29,8 @@
         @each(subfolder in subfolders)
         <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-stretch mb-3"> 
           <div class="d-flex flex-wrap justify-content-between w-100">
-          <div class="px-1 flex-grow-1">
-          {{ subfolder.folder_name }}
+            <div class="px-1 flex-grow-1" style="min-width: 200px; overflow: hidden; text-overflow: ellipsis;">
+              {{ subfolder.folder_name }}
           </div>
           <div class="px-1 flex-grow-1">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-folder" viewBox="0 0 16 16">
@@ -73,8 +73,8 @@
         @each(file in files)
         <li class="list-group-item d-flex flex-column flex-md-row justify-content-between align-items-stretch mb-3">
           <!-- Container für die Dateiinformationen -->
-          <div class="px-1 flex-grow-1">
-              {{ file.file_name }}
+          <div class="px-1 flex-grow-1" style="min-width: 200px; overflow: hidden; text-overflow: ellipsis;">
+            {{ file.file_name }}
             </div>
             <br>
             <div class="d-flex flex-wrap justify-content-between w-100">
