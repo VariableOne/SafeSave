@@ -28,21 +28,6 @@ body {
   height: 50px;
   width: 180px;
 }
-
-/* Auf mobilen Bildschirmen Logo zentrieren und Toggler sichtbar machen */
-@media (max-width: 767px) {
-  #navbarLogo {
-    display: flex;
-    justify-content: center;
-    flex-grow: 1;
-  }
-
-  /* Toggler sichtbar machen */
-  .navbar-toggler {
-    display: block !important; /* Toggler sichtbar machen */
-  }
-}
-
 /* Optional: Abstand für den Toggler-Button auf großen Bildschirmen */
 .navbar-toggler {
   margin-left: auto; /* Toggler-Button auf der rechten Seite */
@@ -144,8 +129,22 @@ body {
 
 /* Media Query für kleinere Bildschirme */
 @media (max-width: 768px) {
+
+  #navbarLogo {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+  }
+  /* Toggler sichtbar machen */
+  .navbar-toggler {
+    display: block !important; /* Toggler sichtbar machen */
+  }
   .card {
     flex-direction: column; /* Stapelt die Card-Seiten übereinander */
+    margin-bottom: 20px;
+  }
+  .scrollable-container{
+    height: 450px;
   }
 }
 
