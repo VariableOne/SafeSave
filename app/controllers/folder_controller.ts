@@ -24,6 +24,7 @@ export default class FolderController {
     const files = await db.from('file').select('*').where('student_id', student.student_id)
     const currentPath = request.url()
     return view.render('pages/home', {
+      successMessage: 'Ordner wurde erfolgreich erstellt',
       currentPath,
       parentFolderId,
       folders: folders || [],
@@ -157,6 +158,6 @@ export default class FolderController {
       .where('student_id', session.get('student').student_id)
     // Prüfen, ob der Ordner eine parent_folder_id hat
     //await this.deleteFolderAndContents(folderId, studentId);
-    return view.render('pages/home', { currentPath, folders, files })
+    return view.render('pages/home', {successMessage: 'Ordner wurde erfolgreich gelöscht', currentPath, folders, files })
   }
 }

@@ -25,7 +25,9 @@
           </li>
         </form>   
         @endif 
-        @if (currentPath && currentPath !== '/auth' && currentPath !== '/logout' && currentPath !== '/home' && currentPath !== '/createFolder' && currentPath !== '/deleteFolder' && currentPath !== '/upload' && currentPath !== '/rename' && currentPath !== '/delete')
+        @if (currentPath && currentPath !== '/auth' && currentPath !== '/logout' 
+        && currentPath !== '/resetPassword' && currentPath !== '/resetAccomplished' && currentPath !=='/registration'
+        && currentPath !== '/newPassword'&& currentPath !== '/home' && currentPath !== '/createFolder' && currentPath !== '/deleteFolder' && currentPath !== '/upload' && currentPath !== '/rename' && currentPath !== '/delete')
         <a href="#" class="nav-link" onclick="window.history.back();">Zurück</a>
         @endif
         </ul>

@@ -82,7 +82,7 @@ export default class FileController {
     const files = await query
     const folders = await db.from('folder').select('*').where('student_id', student.student_id)
 
-    return view.render('pages/home', { currentPath, files, folders })
+    return view.render('pages/home', {successMessage: 'datei wurde erfolgreich erstellt', currentPath, files, folders })
   }
 
   //Anzeigen und Öffnen der Dateien
@@ -162,7 +162,7 @@ export default class FileController {
     const files = await db.from('file').select('*').where('student_id', student.student_id)
     const folders = await db.from('folder').select('*').where('student_id', student.student_id)
 
-    return view.render('pages/home', { currentPath, files, folders })
+    return view.render('pages/home', { successMessage: 'datei wurde erfolgreich gelöscht', currentPath, files, folders })
   }
 
   //Datei umbenennen
