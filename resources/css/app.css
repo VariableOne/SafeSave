@@ -7,8 +7,7 @@ html,
 body {
   height: 100%;
   width: 100%;
-  background: linear-gradient(to right, #FF8C00, #000000);
-  
+  background: linear-gradient(to right, #ff8c00, #000000);
 }
 
 /* Hintergrundfarbe der Navbar */
@@ -59,7 +58,7 @@ body {
 .modal-footer {
   border-top: 1px solid #ddd;
 }
-.modal-body input[type="text"] {
+.modal-body input[type='text'] {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -109,7 +108,8 @@ body {
   overflow: hidden; /* Verhindert, dass Inhalt außerhalb der Card angezeigt wird */
 }
 
-.card-left, .card-right {
+.card-left,
+.card-right {
   flex: 1; /* Beide Seiten der Card wachsen gleichmäßig */
   min-width: 300px; /* Minimale Breite der Card-Seiten */
 }
@@ -137,7 +137,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(to right, #FFA500, #FF4500); /* Farbverlauf für den Hintergrund */
+  background: linear-gradient(to right, #ffa500, #ff4500); /* Farbverlauf für den Hintergrund */
   color: white; /* Textfarbe */
   padding: 2rem; /* Innenabstand */
 }
@@ -150,12 +150,12 @@ body {
 }
 
 .btn-primary {
-  background-color: #FF4500;
-  border-color: #FF4500;
+  background-color: #ff4500;
+  border-color: #ff4500;
 }
 .btn-primary:hover {
-  background-color: #FF6347;
-  border-color: #FF6347;
+  background-color: #ff6347;
+  border-color: #ff6347;
 }
 .form-control {
   border-radius: 5px;

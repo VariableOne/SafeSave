@@ -44,6 +44,8 @@
     "@types/mime-types": "^2.1.4",
     "@types/node": "^22.1.0",
     "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.2.1",
     "hot-hook": "^0.2.6",
     "pino-pretty": "^11.2.1",
     "prettier": "^3.3.2",
